@@ -843,8 +843,8 @@ footer .f-name{color:var(--blue)}
           <div class="corner br"></div>
         </div>
         <div class="about-badge">
-          <span class="about-badge-num">5+</span>
-          <span class="about-badge-label">Years in Data Science</span>
+          <span class="about-badge-num">3+</span>
+          <span class="about-badge-label">Years in AI/ML</span>
         </div>
       </div>
       <div class="about-text">
@@ -882,18 +882,8 @@ footer .f-name{color:var(--blue)}
             <span class="info-val" style="color:var(--blue)">Open to Opportunities</span>
           </div>
         </div>
-        <div class="tag-cloud">
-          <span class="tag">Python</span>
-          <span class="tag">TensorFlow</span>
-          <span class="tag">PyTorch</span>
-          <span class="tag">Scikit-learn</span>
-          <span class="tag">NLP</span>
-          <span class="tag">Computer Vision</span>
-          <span class="tag">MLOps</span>
-          <span class="tag">SQL</span>
-          <span class="tag">AWS</span>
-          <span class="tag">Docker</span>
-        </div>
+        <div class="tag-label" style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em;margin-top:1.75rem;margin-bottom:.75rem;text-transform:uppercase;">// Tech Stack — Drag to rotate</div>
+        <div id="tech-sphere-container"></div>
       </div>
     </div>
   </div>
@@ -1454,6 +1444,185 @@ window.addEventListener('scroll',()=>{
     a.style.color= a.getAttribute('href')==='#'+cur ? 'var(--blue)' : '';
   });
 },{ passive:true });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  const container = document.getElementById('tech-sphere-container');
+  container.style.cssText = 'width:100%;height:340px;position:relative;cursor:grab';
+
+  const techs = [
+    { label:'Python',   color:'#3776AB', text:'Py'  },
+    { label:'PyTorch',  color:'#EE4C2C', text:'PT'  },
+    { label:'TensorFlow',color:'#FF6F00',text:'TF'  },
+    { label:'Sklearn',  color:'#F89939', text:'SK'  },
+    { label:'NumPy',    color:'#4DABCF', text:'NP'  },
+    { label:'Pandas',   color:'#150458', text:'Pd'  },
+    { label:'AWS',      color:'#FF9900', text:'AWS' },
+    { label:'Docker',   color:'#2496ED', text:'🐳'  },
+    { label:'SQL',      color:'#336791', text:'SQL' },
+    { label:'Spark',    color:'#E25A1C', text:'Sp'  },
+    { label:'MLflow',   color:'#0194E2', text:'ML'  },
+    { label:'Hugging🤗',color:'#FFD21E', text:'HF'  },
+  ];
+
+  const W = container.clientWidth, H = 340;
+  const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(W, H);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, W/H, 0.1, 100);
+  camera.position.z = 4.2;
+
+  /* Ambient + directional light */
+  scene.add(new THREE.AmbientLight(0x223355, 2.5));
+  const dLight = new THREE.DirectionalLight(0x00b4ff, 3);
+  dLight.position.set(3,5,5);
+  scene.add(dLight);
+  const dLight2 = new THREE.DirectionalLight(0x0055ff, 1.5);
+  dLight2.position.set(-3,-3,2);
+  scene.add(dLight2);
+
+  /* Sphere wireframe */
+  const wGeo = new THREE.IcosahedronGeometry(1.72, 2);
+  const wMat = new THREE.MeshBasicMaterial({
+    color:0x00b4ff, wireframe:true, transparent:true, opacity:.08
+  });
+  const wireSphere = new THREE.Mesh(wGeo, wMat);
+  scene.add(wireSphere);
+
+  /* Make a canvas texture for each node */
+  function makeTexture(tech){
+    const c = document.createElement('canvas');
+    c.width = 256; c.height = 256;
+    const cx = c.getContext('2d');
+
+    /* Diamond background */
+    cx.save();
+    cx.translate(128,128);
+    cx.rotate(Math.PI/4);
+    const size = 88;
+    cx.fillStyle = tech.color + 'dd';
+    cx.fillRect(-size/2,-size/2,size,size);
+    /* border */
+    cx.strokeStyle = '#00b4ff';
+    cx.lineWidth = 4;
+    cx.strokeRect(-size/2,-size/2,size,size);
+    cx.restore();
+
+    /* text */
+    cx.fillStyle = '#ffffff';
+    cx.font = `bold ${tech.text.length>2?'34':'42'}px monospace`;
+    cx.textAlign = 'center';
+    cx.textBaseline = 'middle';
+    cx.shadowColor = '#00b4ff';
+    cx.shadowBlur = 18;
+    cx.fillText(tech.text, 128, 118);
+
+    /* label */
+    cx.font = '22px monospace';
+    cx.fillStyle = '#aaddff';
+    cx.shadowBlur = 6;
+    cx.fillText(tech.label, 128, 168);
+
+    return new THREE.CanvasTexture(c);
+  }
+
+  /* Distribute points on sphere surface */
+  function fibSphere(n, radius){
+    const pts = [];
+    const golden = Math.PI*(3-Math.sqrt(5));
+    for(let i=0;i<n;i++){
+      const y = 1-(i/(n-1))*2;
+      const r = Math.sqrt(1-y*y);
+      const theta = golden*i;
+      pts.push(new THREE.Vector3(Math.cos(theta)*r*radius, y*radius, Math.sin(theta)*r*radius));
+    }
+    return pts;
+  }
+
+  const positions = fibSphere(techs.length, 1.72);
+  const nodes = [];
+
+  techs.forEach((tech, i)=>{
+    const tex = makeTexture(tech);
+    const mat = new THREE.SpriteMaterial({
+      map:tex, transparent:true,
+      depthTest:false
+    });
+    const sprite = new THREE.Sprite(mat);
+    sprite.position.copy(positions[i]);
+    sprite.scale.set(.72,.72,1);
+    scene.add(sprite);
+    nodes.push(sprite);
+  });
+
+  /* Group for rotation */
+  const group = new THREE.Group();
+  nodes.forEach(n=>{ scene.remove(n); group.add(n); });
+  group.add(wireSphere);
+  scene.add(group);
+
+  /* Mouse / touch drag */
+  let isDragging=false, prevX=0, prevY=0;
+  let velX=0, velY=0;
+  let autoRotY=.003, autoRotX=.0008;
+
+  renderer.domElement.addEventListener('mousedown',e=>{isDragging=true;prevX=e.clientX;prevY=e.clientY;container.style.cursor='grabbing'});
+  window.addEventListener('mouseup',()=>{isDragging=false;container.style.cursor='grab'});
+  window.addEventListener('mousemove',e=>{
+    if(!isDragging)return;
+    const dx=e.clientX-prevX, dy=e.clientY-prevY;
+    velX=dx*.012; velY=dy*.012;
+    group.rotation.y+=velX;
+    group.rotation.x+=velY;
+    prevX=e.clientX; prevY=e.clientY;
+  });
+  renderer.domElement.addEventListener('touchstart',e=>{isDragging=true;prevX=e.touches[0].clientX;prevY=e.touches[0].clientY},{passive:true});
+  window.addEventListener('touchend',()=>isDragging=false);
+  window.addEventListener('touchmove',e=>{
+    if(!isDragging)return;
+    const dx=e.touches[0].clientX-prevX, dy=e.touches[0].clientY-prevY;
+    velX=dx*.012; velY=dy*.012;
+    group.rotation.y+=velX; group.rotation.x+=velY;
+    prevX=e.touches[0].clientX; prevY=e.touches[0].clientY;
+  },{passive:true});
+
+  /* Scale sprites by depth for perspective pop */
+  function updateDepthScale(){
+    nodes.forEach(sprite=>{
+      const worldPos = sprite.getWorldPosition(new THREE.Vector3());
+      const depth = (worldPos.z + 1.72)/(3.44);
+      const s = .45 + depth*.45;
+      sprite.scale.set(s,s,1);
+      sprite.material.opacity = .35 + depth*.65;
+    });
+  }
+
+  /* Animate */
+  function animate(){
+    requestAnimationFrame(animate);
+    if(!isDragging){
+      velX*=.95; velY*=.95;
+      group.rotation.y += autoRotY + velX;
+      group.rotation.x += autoRotX + velY;
+    }
+    updateDepthScale();
+    renderer.render(scene,camera);
+  }
+  animate();
+
+  /* Resize */
+  window.addEventListener('resize',()=>{
+    const nw=container.clientWidth;
+    renderer.setSize(nw,H);
+    camera.aspect=nw/H;
+    camera.updateProjectionMatrix();
+  });
+})();
 </script>
 </body>
 </html>
