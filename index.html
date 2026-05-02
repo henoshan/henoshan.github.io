@@ -1519,47 +1519,63 @@ window.addEventListener('scroll',()=>{
     const rim = new THREE.DirectionalLight(0x00b4ff, 1.2);
     rim.position.set(0, -4, -4); scene.add(rim);
 
-    /* Build texture:
-       - solid brand colour base
-       - logo rendered only in the central circle (front face area)
-       - same logo mirrored on the back (opposite side) */
-    const offscreen = document.createElement('canvas');
-    offscreen.width = 1024; offscreen.height = 512;
-    const octx = offscreen.getContext('2d');
+    /* Build per-face texture using BufferGeometry groups */
+    const faceCanvas = document.createElement('canvas');
+    faceCanvas.width = 512; faceCanvas.height = 512;
+    const fctx = faceCanvas.getContext('2d');
 
-    /* Fill entire texture with brand colour */
-    octx.fillStyle = tech.bg;
-    octx.fillRect(0, 0, 1024, 512);
+    /* Brand colour base */
+    fctx.fillStyle = tech.bg;
+    fctx.fillRect(0,0,512,512);
 
-    /* Helper: draw the logo SVG into a circle mask at (cx, cy) radius r */
-    function drawLogoCircle(cx, cy, r){
-      const img = new Image();
-      const blob = new Blob([tech.svg], {type:'image/svg+xml'});
-      const url = URL.createObjectURL(blob);
-      img.onload = () => {
-        octx.save();
-        octx.beginPath();
-        octx.arc(cx, cy, r, 0, Math.PI*2);
-        octx.clip();
-        /* Slight darker tint behind logo */
-        octx.fillStyle = 'rgba(0,0,0,0.18)';
-        octx.fillRect(cx-r, cy-r, r*2, r*2);
-        /* Logo centred and scaled to 80% of circle diameter */
-        const s = r * 1.6;
-        octx.drawImage(img, cx - s/2, cy - s/2, s, s);
-        octx.restore();
-        URL.revokeObjectURL(url);
-        tex.needsUpdate = true;
-      };
-      img.src = url;
+    /* Pentagonal face design — dark centre panel + logo */
+    fctx.save();
+    /* Pentagon clip */
+    fctx.beginPath();
+    for(let i=0;i<5;i++){
+      const angle = (i*2*Math.PI/5) - Math.PI/2;
+      const r=200, cx=256, cy=256;
+      i===0 ? fctx.moveTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle))
+             : fctx.lineTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
+    }
+    fctx.closePath();
+    /* Dark tinted panel */
+    fctx.fillStyle='rgba(0,0,0,0.28)';
+    fctx.fill();
+    /* Neon border */
+    fctx.strokeStyle='rgba(0,180,255,0.55)';
+    fctx.lineWidth=8;
+    fctx.stroke();
+    fctx.restore();
+
+    /* Corner accent dots */
+    for(let i=0;i<5;i++){
+      const angle=(i*2*Math.PI/5)-Math.PI/2;
+      const r=198;
+      fctx.beginPath();
+      fctx.arc(256+r*Math.cos(angle),256+r*Math.sin(angle),7,0,Math.PI*2);
+      fctx.fillStyle='rgba(0,180,255,0.8)';
+      fctx.fill();
     }
 
-    /* Front face centre: u=0.25 on a 1024-wide equirectangular map → x=256, y=256 */
-    drawLogoCircle(256, 256, 130);
-    /* Back face centre: u=0.75 → x=768, y=256 */
-    drawLogoCircle(768, 256, 130);
+    const tex = new THREE.CanvasTexture(faceCanvas);
 
-    const tex = new THREE.CanvasTexture(offscreen);
+    /* Load SVG and draw logo centred on face */
+    const img = new Image();
+    const blob = new Blob([tech.svg],{type:'image/svg+xml'});
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      /* Circular logo clip */
+      fctx.save();
+      fctx.beginPath();
+      fctx.arc(256,256,148,0,Math.PI*2);
+      fctx.clip();
+      fctx.drawImage(img,256-148,256-148,296,296);
+      fctx.restore();
+      URL.revokeObjectURL(url);
+      tex.needsUpdate=true;
+    };
+    img.src = url;
 
     /* Dodecahedron */
     const geo = new THREE.DodecahedronGeometry(1, 0);
@@ -1570,6 +1586,9 @@ window.addEventListener('scroll',()=>{
       envMapIntensity: 1,
     });
     const mesh = new THREE.Mesh(geo, mat);
+    /* Rotate so a pentagonal face points directly at camera on load */
+    mesh.rotation.x = Math.atan(1/Math.sqrt(5)) * -1;
+    mesh.rotation.y = Math.PI / 5;
     scene.add(mesh);
 
     /* Wireframe edges */
@@ -1580,14 +1599,22 @@ window.addEventListener('scroll',()=>{
     const wireframe = new THREE.LineSegments(edges, lineMat);
     mesh.add(wireframe);
 
-    /* Subtle equator ring glow */
-    const ringGeo = new THREE.TorusGeometry(1.04, 0.014, 16, 120);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: 0x00b4ff, transparent: true, opacity: 0.45
-    });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 2;
-    scene.add(ring);
+    /* Glowing vertex dots at each corner */
+    const dotGeo = new THREE.SphereGeometry(0.045, 8, 8);
+    const dotMat = new THREE.MeshBasicMaterial({color:0x00b4ff});
+    const positions2 = geo.attributes.position;
+    const seen = new Set();
+    for(let i=0;i<positions2.count;i++){
+      const x=+positions2.getX(i).toFixed(3);
+      const y=+positions2.getY(i).toFixed(3);
+      const z=+positions2.getZ(i).toFixed(3);
+      const key=`${x},${y},${z}`;
+      if(seen.has(key)) continue;
+      seen.add(key);
+      const dot = new THREE.Mesh(dotGeo, dotMat);
+      dot.position.set(x,y,z);
+      mesh.add(dot);
+    }
 
     /* Per-sphere drag */
     let drag=false, px=0, py=0, vx=0, vy=0;
@@ -1601,7 +1628,6 @@ window.addEventListener('scroll',()=>{
       if(!drag) return;
       vx = (e.clientX-px)*0.02; vy = (e.clientY-py)*0.02;
       mesh.rotation.y += vx; mesh.rotation.x += vy;
-      ring.rotation.z -= vx * 0.3;
       px=e.clientX; py=e.clientY;
     });
     cv.addEventListener('touchstart', e => {
