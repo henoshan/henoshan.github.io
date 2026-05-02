@@ -1577,44 +1577,162 @@ window.addEventListener('scroll',()=>{
     };
     img.src = url;
 
-    /* Dodecahedron */
-    const geo = new THREE.DodecahedronGeometry(1, 0);
+    /* Build dodecahedron with per-face UV so each face gets its own logo */
+    function buildDodecahedronPerFace(){
+      const phi = (1+Math.sqrt(5))/2;
+      /* 20 vertices of a dodecahedron */
+      const verts = [
+        [ 1, 1, 1],[-1, 1, 1],[ 1,-1, 1],[-1,-1, 1],
+        [ 1, 1,-1],[-1, 1,-1],[ 1,-1,-1],[-1,-1,-1],
+        [0, 1/phi, phi],[0,-1/phi, phi],[0, 1/phi,-phi],[0,-1/phi,-phi],
+        [1/phi, phi,0],[-1/phi, phi,0],[1/phi,-phi,0],[-1/phi,-phi,0],
+        [phi,0, 1/phi],[phi,0,-1/phi],[-phi,0, 1/phi],[-phi,0,-1/phi],
+      ].map(v=>{ const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2); return v.map(x=>x/l); });
+
+      /* 12 pentagonal faces — vertex indices */
+      const faces = [
+        [0,8,9,2,16],[0,16,17,4,12],[0,12,13,1,8],
+        [1,18,3,9,8],[1,13,5,19,18],[2,9,3,15,14],
+        [2,14,6,17,16],[3,18,19,7,15],[4,17,6,11,10],
+        [4,10,5,13,12],[5,10,11,7,19],[6,14,15,7,11],
+      ];
+
+      const positions=[], uvs=[], normals=[], indices=[];
+      let vertCount=0;
+
+      faces.forEach((face, fi)=>{
+        /* Face centre = average of vertices */
+        const cx=face.reduce((s,i)=>s+verts[i][0],0)/5;
+        const cy=face.reduce((s,i)=>s+verts[i][1],0)/5;
+        const cz=face.reduce((s,i)=>s+verts[i][2],0)/5;
+        const len=Math.sqrt(cx*cx+cy*cy+cz*cz);
+        const n=[cx/len,cy/len,cz/len];
+
+        /* Local 2D axes on face plane */
+        const up=[0,1,0];
+        const t1=n[0]**2+n[2]**2<0.001
+          ? [1,0,0]
+          : [n[2]/Math.sqrt(n[0]**2+n[2]**2),0,-n[0]/Math.sqrt(n[0]**2+n[2]**2)];
+        const t2=[
+          n[1]*t1[2]-n[2]*t1[1],
+          n[2]*t1[0]-n[0]*t1[2],
+          n[0]*t1[1]-n[1]*t1[0]
+        ];
+
+        /* Project each vertex onto face plane → UV */
+        const pts2d = face.map(vi=>{
+          const v=verts[vi];
+          const dx=v[0]-cx*1, dy=v[1]-cy*1, dz=v[2]-cz*1;
+          return [dx*t1[0]+dy*t1[1]+dz*t1[2], dx*t2[0]+dy*t2[1]+dz*t2[2]];
+        });
+
+        /* Normalise UV to [0..1] per face */
+        const us=pts2d.map(p=>p[0]), vs2=pts2d.map(p=>p[1]);
+        const minU=Math.min(...us),maxU=Math.max(...us);
+        const minV=Math.min(...vs2),maxV=Math.max(...vs2);
+        const rangeU=maxU-minU, rangeV=maxV-minV;
+        const range=Math.max(rangeU,rangeV);
+        const pad=0.08;
+
+        const faceVerts = face.map((vi,j)=>{
+          const v=verts[vi];
+          positions.push(v[0],v[1],v[2]);
+          normals.push(n[0],n[1],n[2]);
+          const pu=pad+(pts2d[j][0]-minU+(range-rangeU)/2)/range*(1-2*pad);
+          const pv=pad+(pts2d[j][1]-minV+(range-rangeV)/2)/range*(1-2*pad);
+          uvs.push(pu, 1-pv);
+          return vertCount++;
+        });
+
+        /* Fan triangulate pentagon */
+        for(let t=1;t<faceVerts.length-1;t++){
+          indices.push(faceVerts[0],faceVerts[t],faceVerts[t+1]);
+        }
+      });
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+      geo.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));
+      geo.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
+      geo.setIndex(indices);
+      return geo;
+    }
+
+    const geo = buildDodecahedronPerFace();
+
+    /* One texture per face — all 12 faces share same canvas but
+       UVs are set so each face maps to the full [0..1] space of its own texture.
+       Since all faces show the same logo, we use a single rich face texture. */
+    const faceCanvas = document.createElement('canvas');
+    faceCanvas.width = 512; faceCanvas.height = 512;
+    const fctx = faceCanvas.getContext('2d');
+
+    /* Brand bg */
+    fctx.fillStyle = tech.bg;
+    fctx.fillRect(0,0,512,512);
+
+    /* Pentagon panel */
+    fctx.save();
+    fctx.beginPath();
+    for(let i=0;i<5;i++){
+      const a=(i*2*Math.PI/5)-Math.PI/2;
+      const r=230,cx=256,cy=256;
+      i===0?fctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a))
+           :fctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    }
+    fctx.closePath();
+    fctx.fillStyle='rgba(0,0,0,0.22)';
+    fctx.fill();
+    fctx.strokeStyle='rgba(0,180,255,0.6)';
+    fctx.lineWidth=7;
+    fctx.stroke();
+    fctx.restore();
+
+    const tex = new THREE.CanvasTexture(faceCanvas);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    /* Load SVG logo and draw centred */
+    const svgImg = new Image();
+    const svgBlob = new Blob([tech.svg],{type:'image/svg+xml'});
+    const svgUrl = URL.createObjectURL(svgBlob);
+    svgImg.onload = () => {
+      fctx.save();
+      fctx.beginPath();
+      for(let i=0;i<5;i++){
+        const a=(i*2*Math.PI/5)-Math.PI/2;
+        const r=200,cx=256,cy=256;
+        i===0?fctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a))
+             :fctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+      }
+      fctx.closePath();
+      fctx.clip();
+      fctx.drawImage(svgImg,256-165,256-165,330,330);
+      fctx.restore();
+      URL.revokeObjectURL(svgUrl);
+      tex.needsUpdate=true;
+    };
+    svgImg.src = svgUrl;
+
     const mat = new THREE.MeshStandardMaterial({
       map: tex,
-      roughness: 0.2,
-      metalness: 0.6,
-      envMapIntensity: 1,
+      roughness: 0.15,
+      metalness: 0.65,
     });
     const mesh = new THREE.Mesh(geo, mat);
-    /* Rotate so a pentagonal face points directly at camera on load */
-    mesh.rotation.x = Math.atan(1/Math.sqrt(5)) * -1;
-    mesh.rotation.y = Math.PI / 5;
+    mesh.rotation.x = Math.atan(1/Math.sqrt(5))*-1;
+    mesh.rotation.y = Math.PI/5;
     scene.add(mesh);
 
-    /* Wireframe edges */
-    const edges = new THREE.EdgesGeometry(geo);
+    /* Clean wireframe edges only — no dots */
+    const edges = new THREE.EdgesGeometry(new THREE.DodecahedronGeometry(1,0));
     const lineMat = new THREE.LineBasicMaterial({
-      color: 0x00b4ff, transparent: true, opacity: 0.25
+      color:0x00b4ff, transparent:true, opacity:0.3
     });
     const wireframe = new THREE.LineSegments(edges, lineMat);
-    mesh.add(wireframe);
-
-    /* Glowing vertex dots at each corner */
-    const dotGeo = new THREE.SphereGeometry(0.045, 8, 8);
-    const dotMat = new THREE.MeshBasicMaterial({color:0x00b4ff});
-    const positions2 = geo.attributes.position;
-    const seen = new Set();
-    for(let i=0;i<positions2.count;i++){
-      const x=+positions2.getX(i).toFixed(3);
-      const y=+positions2.getY(i).toFixed(3);
-      const z=+positions2.getZ(i).toFixed(3);
-      const key=`${x},${y},${z}`;
-      if(seen.has(key)) continue;
-      seen.add(key);
-      const dot = new THREE.Mesh(dotGeo, dotMat);
-      dot.position.set(x,y,z);
-      mesh.add(dot);
-    }
+    /* Match the same initial rotation as mesh */
+    wireframe.rotation.x = mesh.rotation.x;
+    wireframe.rotation.y = mesh.rotation.y;
+    scene.add(wireframe);
 
     /* Per-sphere drag */
     let drag=false, px=0, py=0, vx=0, vy=0;
@@ -1628,6 +1746,7 @@ window.addEventListener('scroll',()=>{
       if(!drag) return;
       vx = (e.clientX-px)*0.02; vy = (e.clientY-py)*0.02;
       mesh.rotation.y += vx; mesh.rotation.x += vy;
+      wireframe.rotation.y += vx; wireframe.rotation.x += vy;
       px=e.clientX; py=e.clientY;
     });
     cv.addEventListener('touchstart', e => {
@@ -1638,6 +1757,7 @@ window.addEventListener('scroll',()=>{
       if(!drag) return;
       vx=(e.touches[0].clientX-px)*0.02; vy=(e.touches[0].clientY-py)*0.02;
       mesh.rotation.y+=vx; mesh.rotation.x+=vy;
+      wireframe.rotation.y+=vx; wireframe.rotation.x+=vy;
       px=e.touches[0].clientX; py=e.touches[0].clientY;
     }, {passive:true});
 
@@ -1650,9 +1770,12 @@ window.addEventListener('scroll',()=>{
         vx *= 0.88; vy *= 0.88;
         mesh.rotation.y += vx;
         mesh.rotation.x += vy;
-        /* subtle idle breathing wobble — barely perceptible */
-        mesh.rotation.y += Math.sin(t * 0.6) * 0.0008;
-        mesh.rotation.x += Math.cos(t * 0.4) * 0.0005;
+        wireframe.rotation.y += vx;
+        wireframe.rotation.x += vy;
+        mesh.rotation.y += Math.sin(t*0.6)*0.0008;
+        mesh.rotation.x += Math.cos(t*0.4)*0.0005;
+        wireframe.rotation.y += Math.sin(t*0.6)*0.0008;
+        wireframe.rotation.x += Math.cos(t*0.4)*0.0005;
       }
       renderer.render(scene, camera);
     })();
