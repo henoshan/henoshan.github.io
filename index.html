@@ -8,71 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<style>
-/* ============================================================
-   RESET & ROOT
-============================================================ */
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --blue:#00b4ff;
-  --blue2:#0055ff;
-  --blue-soft:#0099dd;
-  --blue-dim:#003a6e;
-  --bg:#05080f;
-  --bg2:#080d18;
-  --bg3:#0b1220;
-  --bg4:#0d1628;
-  --text:#ddeeff;
-  --text2:#8aabcc;
-  --muted:#3d5a78;
-  --border:#0d2a44;
-  --border2:#142e50;
-  --glow:0 0 20px #00b4ff44,0 0 60px #0055ff22;
-  --glow-sm:0 0 10px #00b4ff33;
-}
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Rajdhani',sans-serif;
-  font-size:1.05rem;
-  line-height:1.7;
-  overflow-x:hidden;
-  cursor:none;
-}
-
-/* ============================================================
-   CUSTOM CURSOR
-============================================================ */
-#cursor{
-  position:fixed;width:10px;height:10px;
-  background:var(--blue);border-radius:50%;
-  pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  transition:transform .1s,background .2s;
-  mix-blend-mode:screen;
-}
-#cursor-ring{
-  position:fixed;width:36px;height:36px;
-  border:1px solid var(--blue);border-radius:50%;
-  pointer-events:none;z-index:9998;
-  transform:translate(-50%,-50%);
-  transition:all .12s ease;
-  opacity:.5;
-}
-
-/* ============================================================
-   CANVAS BACKGROUND
-============================================================ */
-#bg-canvas{
-  position:fixed;top:0;left:0;
-  width:100%;height:100%;
-  z-index:0;pointer-events:none;
-}
+<link rel="stylesheet" href="styles/base.css"/>
+<link rel="stylesheet" href="styles/components.css"/>
+<link rel="stylesheet" href="styles/sections.css"/>
+<link rel="stylesheet" href="styles/responsive.css"/>
 
 /* ============================================================
    SCANLINE
-============================================================ */
 .scanline{
   position:fixed;top:0;left:0;right:0;
   height:1px;
@@ -84,7 +26,6 @@ body{
 
 /* ============================================================
    NAV
-============================================================ */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
@@ -130,7 +71,6 @@ nav{
 
 /* ============================================================
    SECTIONS
-============================================================ */
 section{
   position:relative;z-index:2;
   padding:7rem 4rem;
@@ -139,7 +79,6 @@ section{
 
 /* ============================================================
    SECTION HEADERS
-============================================================ */
 .section-label{
   font-family:'Space Mono',monospace;
   font-size:.65rem;color:var(--blue);
@@ -156,7 +95,6 @@ section{
 
 /* ============================================================
    DIVIDER
-============================================================ */
 .divider{
   height:1px;
   background:linear-gradient(90deg,transparent,var(--blue-dim),transparent);
@@ -165,7 +103,6 @@ section{
 
 /* ============================================================
    HERO
-============================================================ */
 #hero{
   min-height:100vh;
   display:flex;align-items:center;
@@ -306,7 +243,6 @@ section{
 
 /* ============================================================
    ABOUT
-============================================================ */
 .about-grid{
   display:grid;
   grid-template-columns:320px 1fr;
@@ -401,7 +337,6 @@ section{
 
 /* ============================================================
    EXPERIENCE
-============================================================ */
 .timeline{position:relative;padding-left:2rem}
 .timeline::before{
   content:'';position:absolute;
@@ -458,7 +393,6 @@ section{
 
 /* ============================================================
    SKILLS
-============================================================ */
 .skills-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
@@ -521,7 +455,6 @@ section{
 
 /* ============================================================
    PROJECTS
-============================================================ */
 .projects-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
@@ -595,7 +528,6 @@ section{
 
 /* ============================================================
    PUBLICATIONS
-============================================================ */
 .pub-list{display:flex;flex-direction:column;gap:1rem}
 .pub-card{
   background:var(--bg3);border:1px solid var(--border);
@@ -634,7 +566,6 @@ section{
 
 /* ============================================================
    AWARDS
-============================================================ */
 .awards-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
@@ -693,7 +624,6 @@ section{
 
 /* ============================================================
    CONTACT
-============================================================ */
 #contact{text-align:center}
 .contact-intro{
   color:var(--text2);max-width:520px;
@@ -725,7 +655,6 @@ section{
 
 /* ============================================================
    FOOTER
-============================================================ */
 footer{
   text-align:center;padding:2.5rem 4rem;
   border-top:1px solid var(--border);
@@ -738,7 +667,6 @@ footer .f-name{color:var(--blue)}
 
 /* ============================================================
    SCROLL REVEAL
-============================================================ */
 .reveal{
   opacity:0;transform:translateY(32px);
   transition:opacity .85s ease,transform .85s ease;
@@ -747,7 +675,6 @@ footer .f-name{color:var(--blue)}
 
 /* ============================================================
    ANIMATIONS
-============================================================ */
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(28px)}
   to{opacity:1;transform:translateY(0)}
@@ -755,7 +682,6 @@ footer .f-name{color:var(--blue)}
 
 /* ============================================================
    RESPONSIVE
-============================================================ */
 @media(max-width:900px){
   nav{padding:1rem 1.75rem}
   .nav-links,.nav-status{display:none}

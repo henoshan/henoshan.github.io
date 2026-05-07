@@ -1,0 +1,40 @@
+/* Section-level visual storytelling */
+#hero::before{
+  content:"";
+  position:absolute;
+  inset:14% 8% auto;
+  height:280px;
+  background:radial-gradient(circle at 10% 30%,rgba(0,180,255,.2),transparent 65%),
+             radial-gradient(circle at 75% 50%,rgba(0,85,255,.16),transparent 60%);
+  filter:blur(12px);
+  z-index:-1;
+  pointer-events:none;
+}
+
+#about,#experience,#skills,#projects,#publications,#awards,#contact{
+  background-image:linear-gradient(to bottom,transparent,rgba(8,13,24,.42),transparent);
+}
+
+.hero-desc,.contact-intro,.about-text p,.project-desc,.tl-desc{
+  max-width:70ch;
+}
+
+.nav-logo{
+  text-shadow:0 0 18px rgba(0,180,255,.38);
+}
+
+.tl-item:hover .tl-role,
+.project-card:hover .project-title,
+.skill-card:hover .skill-cat{
+  color:#e8f7ff;
+  text-shadow:0 0 8px rgba(0,180,255,.25);
+}
+
+.social-btn:hover,.tag:hover,.p-tag:hover,.tl-tag:hover{
+  transform:translateY(-2px);
+}
+
+#contact .contact-email{
+  border-bottom:1px dashed rgba(0,180,255,.45);
+  padding-bottom:.3rem;
+}
