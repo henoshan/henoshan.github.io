@@ -444,11 +444,16 @@ section{
 .tl-desc{color:var(--text2);font-size:.95rem;line-height:1.85}
 .tl-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
 .tl-tag{
-  padding:.15rem .65rem;
-  border:1px solid var(--border2);
-  color:var(--muted);
+  padding:.22rem .72rem;
+  border:1px solid #1e6d99;
+  background:linear-gradient(135deg,rgba(0,180,255,.22),rgba(0,85,255,.18));
+  color:#dff6ff;
+  text-shadow:0 0 8px rgba(0,180,255,.25);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),0 0 10px rgba(0,120,255,.15);
+  border-radius:999px;
   font-family:'Space Mono',monospace;
-  font-size:.6rem;
+  font-size:.62rem;
+  letter-spacing:.03em;
 }
 
 /* ============================================================
@@ -561,9 +566,14 @@ section{
 }
 .p-tag{
   font-family:'Space Mono',monospace;
-  font-size:.62rem;color:var(--muted);
-  border:1px solid var(--border);
-  padding:.2rem .7rem;
+  font-size:.62rem;
+  color:#e8f7ff;
+  border:1px solid #1d6b95;
+  background:linear-gradient(135deg,rgba(0,180,255,.24),rgba(0,85,255,.2));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 0 10px rgba(0,85,255,.16);
+  border-radius:999px;
+  padding:.24rem .76rem;
+  letter-spacing:.03em;
 }
 .project-footer{
   border-top:1px solid var(--border);
@@ -661,6 +671,24 @@ section{
   font-size:.62rem;color:var(--muted);
   letter-spacing:.08em;margin-top:auto;
   padding-top:.5rem;border-top:1px solid var(--border);
+}
+
+.award-featured{
+  display:grid;
+  grid-template-columns:minmax(340px,1.2fr) minmax(260px,.8fr);
+  gap:0;padding:0;overflow:hidden;
+  max-width:860px;margin:0 auto;border-color:var(--blue-dim);
+}
+.award-featured-photo{position:relative;min-height:320px;background:var(--bg4);overflow:hidden;}
+.award-featured-photo img{
+  width:100%;height:100%;display:block;opacity:.92;
+  object-fit:contain;
+  object-position:center;
+  background:var(--bg4);
+}
+@media (max-width:900px){
+  .award-featured{grid-template-columns:1fr;}
+  .award-featured-photo{min-height:260px;}
 }
 
 /* ============================================================
@@ -1244,14 +1272,14 @@ footer .f-name{color:var(--blue)}
     <h2 class="section-title">Awards &amp; <span>Honors</span></h2>
     <div class="awards-grid" style="grid-template-columns:1fr">
 
-      <div class="award-card" style="display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;overflow:hidden;max-width:700px;margin:0 auto;border-color:var(--blue-dim);">
+      <div class="award-card award-featured">
 
         <!-- LEFT: photo -->
-        <div style="position:relative;min-height:320px;background:var(--bg4);overflow:hidden;">
+        <div class="award-featured-photo">
           <img
             src="assets/Varsitty_Battle_Award.jpg"
             alt="Cluster Winner – Varsity Battles"
-            style="width:100%;height:100%;object-fit:cover;display:block;opacity:.92;"
+            
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
           />
           <!-- fallback if photo not yet uploaded -->
@@ -1453,8 +1481,6 @@ window.addEventListener('scroll',()=>{
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
 (function(){
 
   const container = document.getElementById('tech-sphere-container');
@@ -1467,19 +1493,18 @@ window.addEventListener('scroll',()=>{
   `;
 
   const techs = [
-    { label:'Python',       bg:'#1a2e44', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 255"><defs><linearGradient id="pa" x1="12%" y1="12%" x2="85%" y2="88%"><stop offset="0" stop-color="#387EB8"/><stop offset="1" stop-color="#366994"/></linearGradient><linearGradient id="pb" x1="15%" y1="15%" x2="85%" y2="85%"><stop offset="0" stop-color="#FFE052"/><stop offset="1" stop-color="#FFC331"/></linearGradient></defs><path fill="url(#pa)" d="M126.9 0C60.5 0 64.6 28 64.6 28l.1 29h63.4v8.7H40.6S0 61.1 0 128.2s35.5 65 35.5 65h21.2v-31.2s-1.1-35.5 34.9-35.5h60.2s33.8.5 33.8-32.7V34.2S191 0 126.9 0zm-34 19.6c6.1 0 11 4.9 11 11s-4.9 11-11 11-11-4.9-11-11 4.9-11 11-11z"/><path fill="url(#pb)" d="M129.1 255c66.4 0 62.3-28 62.3-28l-.1-29H128v-8.7h87.5S256 194 256 126.8s-35.5-65-35.5-65h-21.2v31.2s1.2 35.5-34.9 35.5H104.3S70.5 128 70.5 161v55.7S65 255 129.1 255zm34-19.6c-6.1 0-11-4.9-11-11s4.9-11 11-11 11 4.9 11 11-4.9 11-11 11z"/></svg>` },
-    { label:'PyTorch',      bg:'#2a1208', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#EE4C2C"/><circle cx="67" cy="28" r="8" fill="white"/><path d="M50 18 A32 32 0 1 1 49.9 18" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/></svg>` },
-    { label:'TensorFlow',   bg:'#2a1f00', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="#FF6F00"/><line x1="30" y1="38" x2="70" y2="38" stroke="white" stroke-width="7" stroke-linecap="round"/><line x1="50" y1="38" x2="50" y2="72" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>` },
-    { label:'Scikit-learn', bg:'#1f1800', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F89939"/><text x="50" y="44" font-family="monospace" font-weight="bold" font-size="19" fill="white" text-anchor="middle">sci-kit</text><text x="50" y="65" font-family="monospace" font-weight="bold" font-size="15" fill="white" text-anchor="middle">learn</text></svg>` },
-    { label:'NumPy',        bg:'#002233', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="16" fill="#4DABCF"/><text x="50" y="62" font-family="monospace" font-weight="bold" font-size="36" fill="white" text-anchor="middle">Np</text></svg>` },
-    { label:'Pandas',       bg:'#08012a', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="12" fill="#150458"/><rect x="30" y="15" width="14" height="38" rx="7" fill="white"/><rect x="56" y="15" width="14" height="38" rx="7" fill="white"/><rect x="30" y="58" width="14" height="26" rx="7" fill="#e70488"/><rect x="56" y="58" width="14" height="26" rx="7" fill="#e70488"/></svg>` },
-    { label:'AWS',          bg:'#1a1200', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#232F3E"/><text x="50" y="48" font-family="monospace" font-weight="bold" font-size="22" fill="#FF9900" text-anchor="middle">AWS</text><path d="M22 63 Q50 76 78 63" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/><polygon points="74,59 80,63 74,67" fill="#FF9900"/></svg>` },
-    { label:'Docker',       bg:'#001428', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#2496ED"/><rect x="16" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="52" width="13" height="11" rx="2" fill="white"/><rect x="46" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="26" width="13" height="11" rx="2" fill="white"/><path d="M62 54 Q72 46 80 54" stroke="white" stroke-width="2.5" fill="none"/><circle cx="72" cy="43" r="4" fill="white"/></svg>` },
-    { label:'SQL',          bg:'#001428', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#336791"/><ellipse cx="50" cy="30" rx="28" ry="10" fill="white" opacity=".9"/><rect x="22" y="30" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="42" rx="28" ry="10" fill="white" opacity=".7"/><rect x="22" y="42" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="54" rx="28" ry="10" fill="white" opacity=".5"/></svg>` },
-    { label:'MLflow',       bg:'#001a2e', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0194E2"/><text x="50" y="56" font-family="monospace" font-weight="bold" font-size="18" fill="white" text-anchor="middle">MLflow</text></svg>` },
-    { label:'Spark',        bg:'#2a1000', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#E25A1C"/><polygon points="50,12 58,34 82,34 63,48 70,70 50,56 30,70 37,48 18,34 42,34" fill="white" opacity=".9"/></svg>` },
-    { label:'HuggingFace',  bg:'#2a2000', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FFD21E"/><text x="50" y="62" font-size="48" text-anchor="middle" dominant-baseline="middle">🤗</text></svg>` },
+    { label:'Python',         bg:'#16293f', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#306998"/><text x="50" y="60" font-family="monospace" font-size="34" font-weight="700" text-anchor="middle" fill="#FFD43B">Py</text></svg>` },
+    { label:'LLMs',           bg:'#1e1736', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#6C47FF"/><text x="50" y="58" font-family="monospace" font-size="26" font-weight="700" text-anchor="middle" fill="white">LLM</text></svg>` },
+    { label:'Generative AI',  bg:'#2a1026', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#C026D3"/><text x="50" y="45" font-family="monospace" font-size="14" text-anchor="middle" fill="white">Gen</text><text x="50" y="65" font-family="monospace" font-size="14" text-anchor="middle" fill="white">AI</text></svg>` },
+    { label:'Multimodal AI',  bg:'#1b2f2f', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0F766E"/><circle cx="34" cy="50" r="11" fill="#99F6E4"/><rect x="49" y="39" width="22" height="22" rx="4" fill="#CCFBF1"/></svg>` },
+    { label:'FastAPI',        bg:'#052f2a', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#009688"/><text x="50" y="58" font-family="monospace" font-size="20" font-weight="700" text-anchor="middle" fill="white">API</text></svg>` },
+    { label:'Flask',          bg:'#101827', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#111827"/><path d="M40 26h20v12l-8 10v20a6 6 0 0 1-12 0V48l8-10z" fill="#E5E7EB"/></svg>` },
+    { label:'Docker',         bg:'#001c33', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#2496ED"/><rect x="24" y="48" width="12" height="10" rx="2" fill="white"/><rect x="38" y="48" width="12" height="10" rx="2" fill="white"/><rect x="52" y="48" width="12" height="10" rx="2" fill="white"/></svg>` },
+    { label:'Azure',          bg:'#07203d', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0078D4"/><path d="M50 16L22 74h18l10-17 10 17h18z" fill="#BFE5FF"/></svg>` },
+    { label:'GCP',            bg:'#1f2937', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#1F2937"/><circle cx="50" cy="50" r="20" fill="none" stroke="#EA4335" stroke-width="8"/><path d="M64 50h15" stroke="#4285F4" stroke-width="8"/></svg>` },
+    { label:'Neo4j',          bg:'#0e2338', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#008CC1"/><circle cx="32" cy="35" r="8" fill="white"/><circle cx="68" cy="35" r="8" fill="white"/><circle cx="50" cy="64" r="8" fill="white"/><path d="M39 39l22 0M35 42l11 16M65 42l-11 16" stroke="white" stroke-width="3"/></svg>` },
   ];
+
 
   const SIZE = 88;
 
