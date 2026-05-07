@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="styles/sections.css"/>
 <link rel="stylesheet" href="styles/responsive.css"/>
 
+<style>
+
 /* ============================================================
    SCANLINE
 .scanline{
@@ -375,6 +377,21 @@ section{
 .tl-company{
   color:var(--blue-soft);font-size:.95rem;
   margin-bottom:.8rem;letter-spacing:.04em;
+}
+.tl-company-row{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  margin-bottom:.8rem;
+}
+.tl-logo{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  border-radius:4px;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,.03);
+  padding:2px;
 }
 .tl-desc{color:var(--text2);font-size:.95rem;line-height:1.85}
 .tl-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
@@ -858,7 +875,10 @@ footer .f-name{color:var(--blue)}
         <div class="tl-dot"></div>
         <div class="tl-date">Sep 2025 — Present</div>
         <div class="tl-role">Data Scientist</div>
-        <div class="tl-company">Deep Data Insight &nbsp;·&nbsp; Brentwood, TN</div>
+        <div class="tl-company-row">
+          <img class="tl-logo" src="assets/ddi.jpeg" alt="Deep Data Insight logo"/>
+          <div class="tl-company">Deep Data Insight &nbsp;·&nbsp; Brentwood, TN</div>
+        </div>
         <p class="tl-desc">
           Working on AI/ML research and development in healthcare-domain applications within
           HIPAA-compliant data environments. Developing and evaluating models using ML, Deep
@@ -1419,16 +1439,16 @@ window.addEventListener('scroll',()=>{
   `;
 
   const techs = [
-    { label:'Python',         bg:'#16293f', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#306998"/><text x="50" y="60" font-family="monospace" font-size="34" font-weight="700" text-anchor="middle" fill="#FFD43B">Py</text></svg>` },
-    { label:'LLMs',           bg:'#1e1736', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#6C47FF"/><text x="50" y="58" font-family="monospace" font-size="26" font-weight="700" text-anchor="middle" fill="white">LLM</text></svg>` },
-    { label:'Generative AI',  bg:'#2a1026', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#C026D3"/><text x="50" y="45" font-family="monospace" font-size="14" text-anchor="middle" fill="white">Gen</text><text x="50" y="65" font-family="monospace" font-size="14" text-anchor="middle" fill="white">AI</text></svg>` },
-    { label:'Multimodal AI',  bg:'#1b2f2f', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0F766E"/><circle cx="34" cy="50" r="11" fill="#99F6E4"/><rect x="49" y="39" width="22" height="22" rx="4" fill="#CCFBF1"/></svg>` },
-    { label:'FastAPI',        bg:'#052f2a', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#009688"/><text x="50" y="58" font-family="monospace" font-size="20" font-weight="700" text-anchor="middle" fill="white">API</text></svg>` },
-    { label:'Flask',          bg:'#101827', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#111827"/><path d="M40 26h20v12l-8 10v20a6 6 0 0 1-12 0V48l8-10z" fill="#E5E7EB"/></svg>` },
-    { label:'Docker',         bg:'#001c33', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#2496ED"/><rect x="24" y="48" width="12" height="10" rx="2" fill="white"/><rect x="38" y="48" width="12" height="10" rx="2" fill="white"/><rect x="52" y="48" width="12" height="10" rx="2" fill="white"/></svg>` },
-    { label:'Azure',          bg:'#07203d', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0078D4"/><path d="M50 16L22 74h18l10-17 10 17h18z" fill="#BFE5FF"/></svg>` },
-    { label:'GCP',            bg:'#1f2937', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#1F2937"/><circle cx="50" cy="50" r="20" fill="none" stroke="#EA4335" stroke-width="8"/><path d="M64 50h15" stroke="#4285F4" stroke-width="8"/></svg>` },
-    { label:'Neo4j',          bg:'#0e2338', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#008CC1"/><circle cx="32" cy="35" r="8" fill="white"/><circle cx="68" cy="35" r="8" fill="white"/><circle cx="50" cy="64" r="8" fill="white"/><path d="M39 39l22 0M35 42l11 16M65 42l-11 16" stroke="white" stroke-width="3"/></svg>` },
+    { label:'Python',        bg:'#16293f', logoPath:'assets/logos/python.png' },
+    { label:'LLMs',          bg:'#1e1736', logoPath:'assets/logos/llm.png' },
+    { label:'Generative AI', bg:'#2a1026', logoPath:'assets/logos/generative-ai.png' },
+    { label:'Multimodal AI', bg:'#1b2f2f', logoPath:'assets/logos/multimodal-ai.png' },
+    { label:'FastAPI',       bg:'#052f2a', logoPath:'assets/logos/fastapi.png' },
+    { label:'Flask',         bg:'#101827', logoPath:'assets/logos/flask.png' },
+    { label:'Docker',        bg:'#001c33', logoPath:'assets/logos/docker.png' },
+    { label:'Azure',         bg:'#07203d', logoPath:'assets/logos/azure.png' },
+    { label:'GCP',           bg:'#1f2937', logoPath:'assets/logos/gcp.png' },
+    { label:'Neo4j',         bg:'#0e2338', logoPath:'assets/logos/neo4j.png' },
   ];
 
 
@@ -1575,20 +1595,28 @@ window.addEventListener('scroll',()=>{
     const tex=new THREE.CanvasTexture(c);
     tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
 
-    /* Load SVG logo — clip inside inner pentagon */
+    function drawFallbackMark(){
+      const initials=tech.label.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+      cx.fillStyle='rgba(255,255,255,.9)';
+      cx.font='700 92px Orbitron, monospace';
+      cx.textAlign='center';
+      cx.textBaseline='middle';
+      cx.fillText(initials,256,256);
+      tex.needsUpdate=true;
+    }
+
+    /* Load local logo image — clip inside inner pentagon */
     const img=new Image();
-    const blob=new Blob([tech.svg],{type:'image/svg+xml'});
-    const url=URL.createObjectURL(blob);
     img.onload=()=>{
       pentPath(195);
       cx.save();
       cx.clip();
       cx.drawImage(img,256-170,256-170,340,340);
       cx.restore();
-      URL.revokeObjectURL(url);
       tex.needsUpdate=true;
     };
-    img.src=url;
+    img.onerror=drawFallbackMark;
+    img.src=tech.logoPath;
 
     return tex;
   }
