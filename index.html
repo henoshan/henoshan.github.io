@@ -1447,339 +1447,300 @@ window.addEventListener('scroll',()=>{
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
 (function(){
+
   const container = document.getElementById('tech-sphere-container');
   container.style.cssText = `
     width:100%;
     display:flex;
     flex-wrap:wrap;
-    gap:1.2rem 1rem;
+    gap:1.4rem 1.2rem;
     padding:.5rem 0 1.5rem;
   `;
 
   const techs = [
-    { label:'Python',      bg:'#3776AB', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 255"><defs><linearGradient id="pa" x1="12%" y1="12%" x2="85%" y2="88%"><stop offset="0" stop-color="#387EB8"/><stop offset="1" stop-color="#366994"/></linearGradient><linearGradient id="pb" x1="15%" y1="15%" x2="85%" y2="85%"><stop offset="0" stop-color="#FFE052"/><stop offset="1" stop-color="#FFC331"/></linearGradient></defs><path fill="url(#pa)" d="M126.9 0C60.5 0 64.6 28 64.6 28l.1 29h63.4v8.7H40.6S0 61.1 0 128.2s35.5 65 35.5 65h21.2v-31.2s-1.1-35.5 34.9-35.5h60.2s33.8.5 33.8-32.7V34.2S191 0 126.9 0zm-34 19.6c6.1 0 11 4.9 11 11s-4.9 11-11 11-11-4.9-11-11 4.9-11 11-11z"/><path fill="url(#pb)" d="M129.1 255c66.4 0 62.3-28 62.3-28l-.1-29H128v-8.7h87.5S256 194 256 126.8s-35.5-65-35.5-65h-21.2v31.2s1.2 35.5-34.9 35.5H104.3S70.5 128 70.5 161v55.7S65 255 129.1 255zm34-19.6c-6.1 0-11-4.9-11-11s4.9-11 11-11 11 4.9 11 11-4.9 11-11 11z"/></svg>` },
-    { label:'PyTorch',     bg:'#EE4C2C', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#EE4C2C"/><circle cx="67" cy="28" r="8" fill="white"/><path d="M50 18 A32 32 0 1 1 49.9 18" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/></svg>` },
-    { label:'TensorFlow',  bg:'#FF6F00', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="#FF6F00"/><line x1="30" y1="38" x2="70" y2="38" stroke="white" stroke-width="7" stroke-linecap="round"/><line x1="50" y1="38" x2="50" y2="72" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>` },
-    { label:'Scikit-learn',bg:'#F89939', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F89939"/><text x="50" y="44" font-family="monospace" font-weight="bold" font-size="19" fill="white" text-anchor="middle">sci-kit</text><text x="50" y="65" font-family="monospace" font-weight="bold" font-size="15" fill="white" text-anchor="middle">learn</text></svg>` },
-    { label:'NumPy',       bg:'#4DABCF', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="16" fill="#4DABCF"/><text x="50" y="62" font-family="monospace" font-weight="bold" font-size="36" fill="white" text-anchor="middle">Np</text></svg>` },
-    { label:'Pandas',      bg:'#150458', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="12" fill="#150458"/><rect x="30" y="15" width="14" height="38" rx="7" fill="white"/><rect x="56" y="15" width="14" height="38" rx="7" fill="white"/><rect x="30" y="58" width="14" height="26" rx="7" fill="#e70488"/><rect x="56" y="58" width="14" height="26" rx="7" fill="#e70488"/></svg>` },
-    { label:'AWS',         bg:'#232F3E', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#232F3E"/><text x="50" y="48" font-family="monospace" font-weight="bold" font-size="22" fill="#FF9900" text-anchor="middle">AWS</text><path d="M22 63 Q50 76 78 63" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/><polygon points="74,59 80,63 74,67" fill="#FF9900"/></svg>` },
-    { label:'Docker',      bg:'#2496ED', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#2496ED"/><rect x="16" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="52" width="13" height="11" rx="2" fill="white"/><rect x="46" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="26" width="13" height="11" rx="2" fill="white"/><path d="M62 54 Q72 46 80 54" stroke="white" stroke-width="2.5" fill="none"/><circle cx="72" cy="43" r="4" fill="white"/></svg>` },
-    { label:'SQL',         bg:'#336791', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#336791"/><ellipse cx="50" cy="30" rx="28" ry="10" fill="white" opacity=".9"/><rect x="22" y="30" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="42" rx="28" ry="10" fill="white" opacity=".7"/><rect x="22" y="42" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="54" rx="28" ry="10" fill="white" opacity=".5"/></svg>` },
-    { label:'MLflow',      bg:'#0194E2', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0194E2"/><text x="50" y="56" font-family="monospace" font-weight="bold" font-size="18" fill="white" text-anchor="middle">MLflow</text></svg>` },
-    { label:'Spark',       bg:'#E25A1C', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#E25A1C"/><polygon points="50,12 58,34 82,34 63,48 70,70 50,56 30,70 37,48 18,34 42,34" fill="white" opacity=".9"/></svg>` },
-    { label:'HuggingFace', bg:'#FFD21E', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FFD21E"/><text x="50" y="62" font-size="48" text-anchor="middle">🤗</text></svg>` },
+    { label:'Python',       bg:'#1a2e44', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 255"><defs><linearGradient id="pa" x1="12%" y1="12%" x2="85%" y2="88%"><stop offset="0" stop-color="#387EB8"/><stop offset="1" stop-color="#366994"/></linearGradient><linearGradient id="pb" x1="15%" y1="15%" x2="85%" y2="85%"><stop offset="0" stop-color="#FFE052"/><stop offset="1" stop-color="#FFC331"/></linearGradient></defs><path fill="url(#pa)" d="M126.9 0C60.5 0 64.6 28 64.6 28l.1 29h63.4v8.7H40.6S0 61.1 0 128.2s35.5 65 35.5 65h21.2v-31.2s-1.1-35.5 34.9-35.5h60.2s33.8.5 33.8-32.7V34.2S191 0 126.9 0zm-34 19.6c6.1 0 11 4.9 11 11s-4.9 11-11 11-11-4.9-11-11 4.9-11 11-11z"/><path fill="url(#pb)" d="M129.1 255c66.4 0 62.3-28 62.3-28l-.1-29H128v-8.7h87.5S256 194 256 126.8s-35.5-65-35.5-65h-21.2v31.2s1.2 35.5-34.9 35.5H104.3S70.5 128 70.5 161v55.7S65 255 129.1 255zm34-19.6c-6.1 0-11-4.9-11-11s4.9-11 11-11 11 4.9 11 11-4.9 11-11 11z"/></svg>` },
+    { label:'PyTorch',      bg:'#2a1208', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#EE4C2C"/><circle cx="67" cy="28" r="8" fill="white"/><path d="M50 18 A32 32 0 1 1 49.9 18" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/></svg>` },
+    { label:'TensorFlow',   bg:'#2a1f00', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 95,30 95,70 50,95 5,70 5,30" fill="#FF6F00"/><line x1="30" y1="38" x2="70" y2="38" stroke="white" stroke-width="7" stroke-linecap="round"/><line x1="50" y1="38" x2="50" y2="72" stroke="white" stroke-width="7" stroke-linecap="round"/></svg>` },
+    { label:'Scikit-learn', bg:'#1f1800', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#F89939"/><text x="50" y="44" font-family="monospace" font-weight="bold" font-size="19" fill="white" text-anchor="middle">sci-kit</text><text x="50" y="65" font-family="monospace" font-weight="bold" font-size="15" fill="white" text-anchor="middle">learn</text></svg>` },
+    { label:'NumPy',        bg:'#002233', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="16" fill="#4DABCF"/><text x="50" y="62" font-family="monospace" font-weight="bold" font-size="36" fill="white" text-anchor="middle">Np</text></svg>` },
+    { label:'Pandas',       bg:'#08012a', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="12" fill="#150458"/><rect x="30" y="15" width="14" height="38" rx="7" fill="white"/><rect x="56" y="15" width="14" height="38" rx="7" fill="white"/><rect x="30" y="58" width="14" height="26" rx="7" fill="#e70488"/><rect x="56" y="58" width="14" height="26" rx="7" fill="#e70488"/></svg>` },
+    { label:'AWS',          bg:'#1a1200', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#232F3E"/><text x="50" y="48" font-family="monospace" font-weight="bold" font-size="22" fill="#FF9900" text-anchor="middle">AWS</text><path d="M22 63 Q50 76 78 63" stroke="#FF9900" stroke-width="4" fill="none" stroke-linecap="round"/><polygon points="74,59 80,63 74,67" fill="#FF9900"/></svg>` },
+    { label:'Docker',       bg:'#001428', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#2496ED"/><rect x="16" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="52" width="13" height="11" rx="2" fill="white"/><rect x="46" y="52" width="13" height="11" rx="2" fill="white"/><rect x="31" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="39" width="13" height="11" rx="2" fill="white"/><rect x="46" y="26" width="13" height="11" rx="2" fill="white"/><path d="M62 54 Q72 46 80 54" stroke="white" stroke-width="2.5" fill="none"/><circle cx="72" cy="43" r="4" fill="white"/></svg>` },
+    { label:'SQL',          bg:'#001428', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#336791"/><ellipse cx="50" cy="30" rx="28" ry="10" fill="white" opacity=".9"/><rect x="22" y="30" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="42" rx="28" ry="10" fill="white" opacity=".7"/><rect x="22" y="42" width="56" height="12" fill="#336791"/><ellipse cx="50" cy="54" rx="28" ry="10" fill="white" opacity=".5"/></svg>` },
+    { label:'MLflow',       bg:'#001a2e', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#0194E2"/><text x="50" y="56" font-family="monospace" font-weight="bold" font-size="18" fill="white" text-anchor="middle">MLflow</text></svg>` },
+    { label:'Spark',        bg:'#2a1000', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" rx="14" fill="#E25A1C"/><polygon points="50,12 58,34 82,34 63,48 70,70 50,56 30,70 37,48 18,34 42,34" fill="white" opacity=".9"/></svg>` },
+    { label:'HuggingFace',  bg:'#2a2000', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FFD21E"/><text x="50" y="62" font-size="48" text-anchor="middle" dominant-baseline="middle">🤗</text></svg>` },
   ];
 
-  const SIZE = 100; // sphere canvas size
+  const SIZE = 105;
 
-  techs.forEach(tech => {
-    const wrap = document.createElement('div');
-    wrap.style.cssText = `
+  /* ── Build dodecahedron geometry with per-face UVs ── */
+  function buildDodecaFaceGeo(){
+    const phi=(1+Math.sqrt(5))/2;
+    const r=1;
+    /* 20 normalised vertices */
+    const V=[
+      [ 1, 1, 1],[-1, 1, 1],[ 1,-1, 1],[-1,-1, 1],
+      [ 1, 1,-1],[-1, 1,-1],[ 1,-1,-1],[-1,-1,-1],
+      [0,1/phi,phi],[0,-1/phi,phi],[0,1/phi,-phi],[0,-1/phi,-phi],
+      [1/phi,phi,0],[-1/phi,phi,0],[1/phi,-phi,0],[-1/phi,-phi,0],
+      [phi,0,1/phi],[phi,0,-1/phi],[-phi,0,1/phi],[-phi,0,-1/phi],
+    ].map(v=>{const l=Math.hypot(...v);return v.map(x=>x/l*r);});
+
+    /* 12 faces (each a pentagon of vertex indices, wound consistently) */
+    const F=[
+      [0,8,9,2,16],[0,16,17,4,12],[0,12,13,1,8],
+      [1,18,3,9,8],[1,13,5,19,18],[2,9,3,15,14],
+      [2,14,6,17,16],[3,18,19,7,15],[4,17,6,11,10],
+      [4,10,5,13,12],[5,10,11,7,19],[6,14,15,7,11],
+    ];
+
+    const pos=[],nor=[],uv=[],idx=[];
+    let vc=0;
+
+    F.forEach(face=>{
+      /* Face normal = normalised centroid */
+      const cx=face.reduce((s,i)=>s+V[i][0],0)/5;
+      const cy=face.reduce((s,i)=>s+V[i][1],0)/5;
+      const cz=face.reduce((s,i)=>s+V[i][2],0)/5;
+      const cl=Math.hypot(cx,cy,cz);
+      const n=[cx/cl,cy/cl,cz/cl];
+
+      /* Two tangent axes in the face plane */
+      const ax= Math.abs(n[0])<.9?[1,0,0]:[0,1,0];
+      const t1=[
+        ax[1]*n[2]-ax[2]*n[1],
+        ax[2]*n[0]-ax[0]*n[2],
+        ax[0]*n[1]-ax[1]*n[0],
+      ];
+      const tl=Math.hypot(...t1);
+      t1.forEach((_,i)=>t1[i]/=tl);
+      const t2=[
+        n[1]*t1[2]-n[2]*t1[1],
+        n[2]*t1[0]-n[0]*t1[2],
+        n[0]*t1[1]-n[1]*t1[0],
+      ];
+
+      /* Project verts onto face plane → 2-D */
+      const pts=face.map(vi=>{
+        const v=V[vi];
+        const dx=v[0]-cx,dy=v[1]-cy,dz=v[2]-cz;
+        return [
+          dx*t1[0]+dy*t1[1]+dz*t1[2],
+          dx*t2[0]+dy*t2[1]+dz*t2[2],
+        ];
+      });
+
+      /* Normalise to [pad … 1-pad] UV square */
+      const pad=0.04;
+      const us=pts.map(p=>p[0]),vs=pts.map(p=>p[1]);
+      const minU=Math.min(...us),maxU=Math.max(...us);
+      const minV=Math.min(...vs),maxV=Math.max(...vs);
+      const rng=Math.max(maxU-minU,maxV-minV)||1;
+      const offU=(rng-(maxU-minU))/2, offV=(rng-(maxV-minV))/2;
+
+      const fv=face.map((vi,j)=>{
+        const v=V[vi];
+        pos.push(v[0],v[1],v[2]);
+        nor.push(n[0],n[1],n[2]);
+        const pu=pad+(pts[j][0]-minU+offU)/rng*(1-2*pad);
+        const pv=pad+(pts[j][1]-minV+offV)/rng*(1-2*pad);
+        uv.push(pu,1-pv);
+        return vc++;
+      });
+      /* Fan-triangulate pentagon */
+      for(let t=1;t<fv.length-1;t++) idx.push(fv[0],fv[t],fv[t+1]);
+    });
+
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
+    g.setAttribute('normal',  new THREE.Float32BufferAttribute(nor,3));
+    g.setAttribute('uv',      new THREE.Float32BufferAttribute(uv,2));
+    g.setIndex(idx);
+    return g;
+  }
+
+  /* ── Build face texture: brand-colour bg + neon pentagon border + logo ── */
+  function buildFaceTex(tech, renderer){
+    const c=document.createElement('canvas');
+    c.width=512;c.height=512;
+    const cx=c.getContext('2d');
+
+    /* Brand colour fill */
+    cx.fillStyle=tech.bg;
+    cx.fillRect(0,0,512,512);
+
+    /* Dark radial vignette */
+    const rg=cx.createRadialGradient(256,256,60,256,256,280);
+    rg.addColorStop(0,'rgba(0,0,0,0)');
+    rg.addColorStop(1,'rgba(0,0,0,0.55)');
+    cx.fillStyle=rg;
+    cx.fillRect(0,0,512,512);
+
+    /* Neon pentagon border — matches UV face shape */
+    function pentPath(r){
+      cx.beginPath();
+      for(let i=0;i<5;i++){
+        const a=(i*2*Math.PI/5)-Math.PI/2;
+        i===0?cx.moveTo(256+r*Math.cos(a),256+r*Math.sin(a))
+             :cx.lineTo(256+r*Math.cos(a),256+r*Math.sin(a));
+      }
+      cx.closePath();
+    }
+
+    /* Outer glow ring */
+    cx.shadowColor='#00b4ff';
+    cx.shadowBlur=22;
+    pentPath(228);
+    cx.strokeStyle='rgba(0,180,255,0.7)';
+    cx.lineWidth=5;
+    cx.stroke();
+    cx.shadowBlur=0;
+
+    /* Inner subtle panel */
+    pentPath(210);
+    cx.fillStyle='rgba(0,0,0,0.18)';
+    cx.fill();
+
+    /* Corner accent dots */
+    for(let i=0;i<5;i++){
+      const a=(i*2*Math.PI/5)-Math.PI/2;
+      cx.beginPath();
+      cx.arc(256+226*Math.cos(a),256+226*Math.sin(a),6,0,Math.PI*2);
+      cx.fillStyle='rgba(0,200,255,0.9)';
+      cx.shadowColor='#00b4ff';cx.shadowBlur=10;
+      cx.fill();cx.shadowBlur=0;
+    }
+
+    const tex=new THREE.CanvasTexture(c);
+    tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+
+    /* Load SVG logo — clip inside inner pentagon */
+    const img=new Image();
+    const blob=new Blob([tech.svg],{type:'image/svg+xml'});
+    const url=URL.createObjectURL(blob);
+    img.onload=()=>{
+      pentPath(195);
+      cx.save();
+      cx.clip();
+      cx.drawImage(img,256-170,256-170,340,340);
+      cx.restore();
+      URL.revokeObjectURL(url);
+      tex.needsUpdate=true;
+    };
+    img.src=url;
+
+    return tex;
+  }
+
+  /* ── Per-tech dodecahedron ── */
+  techs.forEach(tech=>{
+    /* Wrapper div */
+    const wrap=document.createElement('div');
+    wrap.style.cssText=`
       display:flex;flex-direction:column;
-      align-items:center;gap:.5rem;
+      align-items:center;gap:.55rem;
       flex-shrink:0;width:${SIZE}px;
     `;
 
-    /* Three.js canvas */
-    const cv = document.createElement('canvas');
-    cv.width = SIZE; cv.height = SIZE;
-    cv.style.cursor = 'grab';
+    /* Canvas */
+    const cv=document.createElement('canvas');
+    cv.width=SIZE;cv.height=SIZE;
+    cv.style.cursor='grab';
     wrap.appendChild(cv);
 
     /* Label */
-    const lbl = document.createElement('span');
-    lbl.textContent = tech.label;
-    lbl.style.cssText = `
+    const lbl=document.createElement('span');
+    lbl.textContent=tech.label;
+    lbl.style.cssText=`
       font-family:'Space Mono',monospace;
-      font-size:.52rem;color:var(--blue);
+      font-size:.52rem;color:#00b4ff;
       letter-spacing:.06em;text-transform:uppercase;
       text-align:center;line-height:1.3;
     `;
     wrap.appendChild(lbl);
     container.appendChild(wrap);
 
-    /* Renderer */
-    const renderer = new THREE.WebGLRenderer({ canvas:cv, antialias:true, alpha:true });
+    /* Three.js */
+    const renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(SIZE, SIZE);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setSize(SIZE,SIZE);
+    renderer.setClearColor(0x000000,0);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-    camera.position.z = 2.9;
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(42,1,0.1,100);
+    camera.position.z=2.85;
 
-    /* Lighting — key from top-right, fill from left, ambient */
-    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-    const key = new THREE.DirectionalLight(0xffffff, 2.2);
-    key.position.set(3, 4, 5); scene.add(key);
-    const fill = new THREE.DirectionalLight(0x88ccff, 0.8);
-    fill.position.set(-3, -2, 2); scene.add(fill);
-    const rim = new THREE.DirectionalLight(0x00b4ff, 1.2);
-    rim.position.set(0, -4, -4); scene.add(rim);
+    /* Lighting */
+    scene.add(new THREE.AmbientLight(0xffffff,0.65));
+    const kl=new THREE.DirectionalLight(0xffffff,2.0);
+    kl.position.set(3,4,5);scene.add(kl);
+    const fl=new THREE.DirectionalLight(0x88ccff,0.7);
+    fl.position.set(-3,-2,2);scene.add(fl);
+    const rl=new THREE.DirectionalLight(0x00b4ff,1.0);
+    rl.position.set(0,-4,-4);scene.add(rl);
 
-    /* Build per-face texture using BufferGeometry groups */
-    const faceCanvas = document.createElement('canvas');
-    faceCanvas.width = 512; faceCanvas.height = 512;
-    const fctx = faceCanvas.getContext('2d');
-
-    /* Brand colour base */
-    fctx.fillStyle = tech.bg;
-    fctx.fillRect(0,0,512,512);
-
-    /* Pentagonal face design — dark centre panel + logo */
-    fctx.save();
-    /* Pentagon clip */
-    fctx.beginPath();
-    for(let i=0;i<5;i++){
-      const angle = (i*2*Math.PI/5) - Math.PI/2;
-      const r=200, cx=256, cy=256;
-      i===0 ? fctx.moveTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle))
-             : fctx.lineTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
-    }
-    fctx.closePath();
-    /* Dark tinted panel */
-    fctx.fillStyle='rgba(0,0,0,0.28)';
-    fctx.fill();
-    /* Neon border */
-    fctx.strokeStyle='rgba(0,180,255,0.55)';
-    fctx.lineWidth=8;
-    fctx.stroke();
-    fctx.restore();
-
-    /* Corner accent dots */
-    for(let i=0;i<5;i++){
-      const angle=(i*2*Math.PI/5)-Math.PI/2;
-      const r=198;
-      fctx.beginPath();
-      fctx.arc(256+r*Math.cos(angle),256+r*Math.sin(angle),7,0,Math.PI*2);
-      fctx.fillStyle='rgba(0,180,255,0.8)';
-      fctx.fill();
-    }
-
-    const tex = new THREE.CanvasTexture(faceCanvas);
-
-    /* Load SVG and draw logo centred on face */
-    const img = new Image();
-    const blob = new Blob([tech.svg],{type:'image/svg+xml'});
-    const url = URL.createObjectURL(blob);
-    img.onload = () => {
-      /* Circular logo clip */
-      fctx.save();
-      fctx.beginPath();
-      fctx.arc(256,256,148,0,Math.PI*2);
-      fctx.clip();
-      fctx.drawImage(img,256-148,256-148,296,296);
-      fctx.restore();
-      URL.revokeObjectURL(url);
-      tex.needsUpdate=true;
-    };
-    img.src = url;
-
-    /* Build dodecahedron with per-face UV so each face gets its own logo */
-    function buildDodecahedronPerFace(){
-      const phi = (1+Math.sqrt(5))/2;
-      /* 20 vertices of a dodecahedron */
-      const verts = [
-        [ 1, 1, 1],[-1, 1, 1],[ 1,-1, 1],[-1,-1, 1],
-        [ 1, 1,-1],[-1, 1,-1],[ 1,-1,-1],[-1,-1,-1],
-        [0, 1/phi, phi],[0,-1/phi, phi],[0, 1/phi,-phi],[0,-1/phi,-phi],
-        [1/phi, phi,0],[-1/phi, phi,0],[1/phi,-phi,0],[-1/phi,-phi,0],
-        [phi,0, 1/phi],[phi,0,-1/phi],[-phi,0, 1/phi],[-phi,0,-1/phi],
-      ].map(v=>{ const l=Math.sqrt(v[0]**2+v[1]**2+v[2]**2); return v.map(x=>x/l); });
-
-      /* 12 pentagonal faces — vertex indices */
-      const faces = [
-        [0,8,9,2,16],[0,16,17,4,12],[0,12,13,1,8],
-        [1,18,3,9,8],[1,13,5,19,18],[2,9,3,15,14],
-        [2,14,6,17,16],[3,18,19,7,15],[4,17,6,11,10],
-        [4,10,5,13,12],[5,10,11,7,19],[6,14,15,7,11],
-      ];
-
-      const positions=[], uvs=[], normals=[], indices=[];
-      let vertCount=0;
-
-      faces.forEach((face, fi)=>{
-        /* Face centre = average of vertices */
-        const cx=face.reduce((s,i)=>s+verts[i][0],0)/5;
-        const cy=face.reduce((s,i)=>s+verts[i][1],0)/5;
-        const cz=face.reduce((s,i)=>s+verts[i][2],0)/5;
-        const len=Math.sqrt(cx*cx+cy*cy+cz*cz);
-        const n=[cx/len,cy/len,cz/len];
-
-        /* Local 2D axes on face plane */
-        const up=[0,1,0];
-        const t1=n[0]**2+n[2]**2<0.001
-          ? [1,0,0]
-          : [n[2]/Math.sqrt(n[0]**2+n[2]**2),0,-n[0]/Math.sqrt(n[0]**2+n[2]**2)];
-        const t2=[
-          n[1]*t1[2]-n[2]*t1[1],
-          n[2]*t1[0]-n[0]*t1[2],
-          n[0]*t1[1]-n[1]*t1[0]
-        ];
-
-        /* Project each vertex onto face plane → UV */
-        const pts2d = face.map(vi=>{
-          const v=verts[vi];
-          const dx=v[0]-cx*1, dy=v[1]-cy*1, dz=v[2]-cz*1;
-          return [dx*t1[0]+dy*t1[1]+dz*t1[2], dx*t2[0]+dy*t2[1]+dz*t2[2]];
-        });
-
-        /* Normalise UV to [0..1] per face */
-        const us=pts2d.map(p=>p[0]), vs2=pts2d.map(p=>p[1]);
-        const minU=Math.min(...us),maxU=Math.max(...us);
-        const minV=Math.min(...vs2),maxV=Math.max(...vs2);
-        const rangeU=maxU-minU, rangeV=maxV-minV;
-        const range=Math.max(rangeU,rangeV);
-        const pad=0.08;
-
-        const faceVerts = face.map((vi,j)=>{
-          const v=verts[vi];
-          positions.push(v[0],v[1],v[2]);
-          normals.push(n[0],n[1],n[2]);
-          const pu=pad+(pts2d[j][0]-minU+(range-rangeU)/2)/range*(1-2*pad);
-          const pv=pad+(pts2d[j][1]-minV+(range-rangeV)/2)/range*(1-2*pad);
-          uvs.push(pu, 1-pv);
-          return vertCount++;
-        });
-
-        /* Fan triangulate pentagon */
-        for(let t=1;t<faceVerts.length-1;t++){
-          indices.push(faceVerts[0],faceVerts[t],faceVerts[t+1]);
-        }
-      });
-
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
-      geo.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));
-      geo.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
-      geo.setIndex(indices);
-      return geo;
-    }
-
-    const geo = buildDodecahedronPerFace();
-
-    /* One texture per face — all 12 faces share same canvas but
-       UVs are set so each face maps to the full [0..1] space of its own texture.
-       Since all faces show the same logo, we use a single rich face texture. */
-    const faceCanvas = document.createElement('canvas');
-    faceCanvas.width = 512; faceCanvas.height = 512;
-    const fctx = faceCanvas.getContext('2d');
-
-    /* Brand bg */
-    fctx.fillStyle = tech.bg;
-    fctx.fillRect(0,0,512,512);
-
-    /* Pentagon panel */
-    fctx.save();
-    fctx.beginPath();
-    for(let i=0;i<5;i++){
-      const a=(i*2*Math.PI/5)-Math.PI/2;
-      const r=230,cx=256,cy=256;
-      i===0?fctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a))
-           :fctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
-    }
-    fctx.closePath();
-    fctx.fillStyle='rgba(0,0,0,0.22)';
-    fctx.fill();
-    fctx.strokeStyle='rgba(0,180,255,0.6)';
-    fctx.lineWidth=7;
-    fctx.stroke();
-    fctx.restore();
-
-    const tex = new THREE.CanvasTexture(faceCanvas);
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-
-    /* Load SVG logo and draw centred */
-    const svgImg = new Image();
-    const svgBlob = new Blob([tech.svg],{type:'image/svg+xml'});
-    const svgUrl = URL.createObjectURL(svgBlob);
-    svgImg.onload = () => {
-      fctx.save();
-      fctx.beginPath();
-      for(let i=0;i<5;i++){
-        const a=(i*2*Math.PI/5)-Math.PI/2;
-        const r=200,cx=256,cy=256;
-        i===0?fctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a))
-             :fctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
-      }
-      fctx.closePath();
-      fctx.clip();
-      fctx.drawImage(svgImg,256-165,256-165,330,330);
-      fctx.restore();
-      URL.revokeObjectURL(svgUrl);
-      tex.needsUpdate=true;
-    };
-    svgImg.src = svgUrl;
-
-    const mat = new THREE.MeshStandardMaterial({
-      map: tex,
-      roughness: 0.15,
-      metalness: 0.65,
+    /* Geometry + texture */
+    const geo=buildDodecaFaceGeo();
+    const tex=buildFaceTex(tech,renderer);
+    const mat=new THREE.MeshStandardMaterial({
+      map:tex,roughness:0.18,metalness:0.6,
     });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.rotation.x = Math.atan(1/Math.sqrt(5))*-1;
-    mesh.rotation.y = Math.PI/5;
+    const mesh=new THREE.Mesh(geo,mat);
+
+    /* Start with a front face aimed at camera */
+    mesh.rotation.x=Math.atan(1/Math.sqrt(5))*-1;
+    mesh.rotation.y=Math.PI/5;
     scene.add(mesh);
 
-    /* Clean wireframe edges only — no dots */
-    const edges = new THREE.EdgesGeometry(new THREE.DodecahedronGeometry(1,0));
-    const lineMat = new THREE.LineBasicMaterial({
-      color:0x00b4ff, transparent:true, opacity:0.3
-    });
-    const wireframe = new THREE.LineSegments(edges, lineMat);
-    /* Match the same initial rotation as mesh */
-    wireframe.rotation.x = mesh.rotation.x;
-    wireframe.rotation.y = mesh.rotation.y;
-    scene.add(wireframe);
+    /* Wireframe on reference dodecahedron (separate so it never breaks) */
+    const wfGeo=new THREE.EdgesGeometry(new THREE.DodecahedronGeometry(1,0));
+    const wfMat=new THREE.LineBasicMaterial({color:0x00b4ff,transparent:true,opacity:0.22});
+    const wf=new THREE.LineSegments(wfGeo,wfMat);
+    wf.rotation.x=mesh.rotation.x;
+    wf.rotation.y=mesh.rotation.y;
+    scene.add(wf);
 
-    /* Per-sphere drag */
-    let drag=false, px=0, py=0, vx=0, vy=0;
-
-    cv.addEventListener('mousedown', e => {
-      drag=true; px=e.clientX; py=e.clientY;
-      cv.style.cursor='grabbing'; e.stopPropagation();
+    /* Drag */
+    let drag=false,px=0,py=0,vx=0,vy=0;
+    cv.addEventListener('mousedown',e=>{drag=true;px=e.clientX;py=e.clientY;cv.style.cursor='grabbing';e.stopPropagation();});
+    window.addEventListener('mouseup',()=>{drag=false;cv.style.cursor='grab';});
+    window.addEventListener('mousemove',e=>{
+      if(!drag)return;
+      vx=(e.clientX-px)*0.022;vy=(e.clientY-py)*0.022;
+      mesh.rotation.y+=vx;mesh.rotation.x+=vy;
+      wf.rotation.y+=vx;wf.rotation.x+=vy;
+      px=e.clientX;py=e.clientY;
     });
-    window.addEventListener('mouseup', () => { drag=false; cv.style.cursor='grab'; });
-    window.addEventListener('mousemove', e => {
-      if(!drag) return;
-      vx = (e.clientX-px)*0.02; vy = (e.clientY-py)*0.02;
-      mesh.rotation.y += vx; mesh.rotation.x += vy;
-      wireframe.rotation.y += vx; wireframe.rotation.x += vy;
-      px=e.clientX; py=e.clientY;
-    });
-    cv.addEventListener('touchstart', e => {
-      drag=true; px=e.touches[0].clientX; py=e.touches[0].clientY;
-    }, {passive:true});
-    window.addEventListener('touchend', () => drag=false);
-    window.addEventListener('touchmove', e => {
-      if(!drag) return;
-      vx=(e.touches[0].clientX-px)*0.02; vy=(e.touches[0].clientY-py)*0.02;
-      mesh.rotation.y+=vx; mesh.rotation.x+=vy;
-      wireframe.rotation.y+=vx; wireframe.rotation.x+=vy;
-      px=e.touches[0].clientX; py=e.touches[0].clientY;
-    }, {passive:true});
+    cv.addEventListener('touchstart',e=>{drag=true;px=e.touches[0].clientX;py=e.touches[0].clientY;},{passive:true});
+    window.addEventListener('touchend',()=>drag=false);
+    window.addEventListener('touchmove',e=>{
+      if(!drag)return;
+      vx=(e.touches[0].clientX-px)*0.022;vy=(e.touches[0].clientY-py)*0.022;
+      mesh.rotation.y+=vx;mesh.rotation.x+=vy;
+      wf.rotation.y+=vx;wf.rotation.x+=vy;
+      px=e.touches[0].clientX;py=e.touches[0].clientY;
+    },{passive:true});
 
-    /* Animate — no auto-rotate, just a gentle idle micro-vibration */
-    let t = Math.random() * 100;
+    /* Animate — micro idle wobble only, no auto-spin */
+    let t=Math.random()*100;
     (function loop(){
       requestAnimationFrame(loop);
-      t += 0.012;
+      t+=0.012;
       if(!drag){
-        vx *= 0.88; vy *= 0.88;
-        mesh.rotation.y += vx;
-        mesh.rotation.x += vy;
-        wireframe.rotation.y += vx;
-        wireframe.rotation.x += vy;
-        mesh.rotation.y += Math.sin(t*0.6)*0.0008;
-        mesh.rotation.x += Math.cos(t*0.4)*0.0005;
-        wireframe.rotation.y += Math.sin(t*0.6)*0.0008;
-        wireframe.rotation.x += Math.cos(t*0.4)*0.0005;
+        vx*=0.88;vy*=0.88;
+        const dx=vx+Math.sin(t*0.55)*0.0007;
+        const dy=vy+Math.cos(t*0.38)*0.0005;
+        mesh.rotation.y+=dx;mesh.rotation.x+=dy;
+        wf.rotation.y+=dx;wf.rotation.x+=dy;
       }
-      renderer.render(scene, camera);
+      renderer.render(scene,camera);
     })();
   });
+
 })();
 </script>
 </body>
