@@ -1,0 +1,48 @@
+/* Component enhancements for data-science brand */
+:root{
+  --card-grad:linear-gradient(145deg,rgba(15,34,56,.55),rgba(10,18,32,.88));
+}
+
+section .container{
+  position:relative;
+}
+
+.section-title{
+  text-wrap:balance;
+}
+
+.btn{
+  position:relative;
+  overflow:hidden;
+}
+.btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-110%);
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,.22),transparent);
+  transition:transform .6s ease;
+}
+.btn:hover::before{transform:translateX(110%)}
+
+.skill-card,.project-card,.pub-card,.award-card{
+  background:var(--card-grad);
+  backdrop-filter:blur(3px);
+}
+
+.project-card,.skill-card,.pub-card,.award-card,.tl-item{
+  position:relative;
+}
+
+.project-card::after,.skill-card::after,.pub-card::after,.award-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border:1px solid transparent;
+  background:linear-gradient(130deg,rgba(0,180,255,.2),transparent 35%,transparent 70%,rgba(0,85,255,.2)) border-box;
+  -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+  opacity:.35;
+}
