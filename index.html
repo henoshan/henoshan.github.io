@@ -1478,7 +1478,7 @@ window.addEventListener('scroll',()=>{
     { label:'HuggingFace',  bg:'#2a2000', svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#FFD21E"/><text x="50" y="62" font-size="48" text-anchor="middle" dominant-baseline="middle">🤗</text></svg>` },
   ];
 
-  const SIZE = 105;
+  const SIZE = 88;
 
   /* ── Build dodecahedron geometry with per-face UVs ── */
   function buildDodecaFaceGeo(){
@@ -1549,7 +1549,7 @@ window.addEventListener('scroll',()=>{
         const v=V[vi];
         pos.push(v[0],v[1],v[2]);
         nor.push(n[0],n[1],n[2]);
-        const pu=pad+(pts[j][0]-minU+offU)/rng*(1-2*pad);
+        const pu=1-(pad+(pts[j][0]-minU+offU)/rng*(1-2*pad));
         const pv=pad+(pts[j][1]-minV+offV)/rng*(1-2*pad);
         uv.push(pu,1-pv);
         return vc++;
@@ -1678,19 +1678,19 @@ window.addEventListener('scroll',()=>{
     camera.position.z=2.85;
 
     /* Lighting */
-    scene.add(new THREE.AmbientLight(0xffffff,0.65));
-    const kl=new THREE.DirectionalLight(0xffffff,2.0);
+    scene.add(new THREE.AmbientLight(0xffffff,0.45));
+    const kl=new THREE.DirectionalLight(0xffffff,1.1);
     kl.position.set(3,4,5);scene.add(kl);
-    const fl=new THREE.DirectionalLight(0x88ccff,0.7);
+    const fl=new THREE.DirectionalLight(0x88ccff,0.35);
     fl.position.set(-3,-2,2);scene.add(fl);
-    const rl=new THREE.DirectionalLight(0x00b4ff,1.0);
+    const rl=new THREE.DirectionalLight(0x00b4ff,0.4);
     rl.position.set(0,-4,-4);scene.add(rl);
 
     /* Geometry + texture */
     const geo=buildDodecaFaceGeo();
     const tex=buildFaceTex(tech,renderer);
     const mat=new THREE.MeshStandardMaterial({
-      map:tex,roughness:0.18,metalness:0.6,
+      map:tex,roughness:0.55,metalness:0.25,
     });
     const mesh=new THREE.Mesh(geo,mat);
 
@@ -1701,7 +1701,7 @@ window.addEventListener('scroll',()=>{
 
     /* Wireframe on reference dodecahedron (separate so it never breaks) */
     const wfGeo=new THREE.EdgesGeometry(new THREE.DodecahedronGeometry(1,0));
-    const wfMat=new THREE.LineBasicMaterial({color:0x00b4ff,transparent:true,opacity:0.22});
+    const wfMat=new THREE.LineBasicMaterial({color:0x00b4ff,transparent:true,opacity:0.12});
     const wf=new THREE.LineSegments(wfGeo,wfMat);
     wf.rotation.x=mesh.rotation.x;
     wf.rotation.y=mesh.rotation.y;
