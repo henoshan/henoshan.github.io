@@ -754,6 +754,9 @@ footer .f-name{color:var(--blue)}
 <section id="hero">
   <div class="container">
     <div class="hero-inner">
+      <div class="hero-float-node" style="width:40px;height:40px;top:8%;right:18%;opacity:.3;"></div>
+      <div class="hero-float-node" style="width:20px;height:20px;top:25%;right:8%;opacity:.2;"></div>
+      <div class="hero-float-node" style="width:28px;height:28px;top:55%;right:28%;opacity:.18;"></div>
       <p class="hero-eyebrow">The Data Scientist &amp; AI Researcher</p>
       <h1 class="hero-name">
         <span class="first glitch" data-text="HENOSHAN A." style="color:var(--blue);text-shadow:0 0 40px #00b4ffaa,0 0 80px #00b4ff44;font-size:inherit;">HENOSHAN A.</span>
@@ -1421,17 +1424,23 @@ const barObs=new IntersectionObserver(entries=>{
 bars.forEach(b=>barObs.observe(b));
 
 /* ------ ACTIVE NAV LINK ON SCROLL ------ */
-const sections=document.querySelectorAll('section[id]');
-const navLinks=document.querySelectorAll('.nav-links a');
+const sections2 = document.querySelectorAll('section[id]');
+const navLinks2  = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll',()=>{
-  let cur='';
-  sections.forEach(s=>{
-    if(window.scrollY>=s.offsetTop-120) cur=s.id;
+  let current = '';
+  sections2.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 130) current = s.id;
   });
-  navLinks.forEach(a=>{
-    a.style.color= a.getAttribute('href')==='#'+cur ? 'var(--blue)' : '';
+  navLinks2.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+    a.style.color = '';
   });
 },{ passive:true });
+/* ------ NAV SCROLL STATE ------ */
+const navEl = document.querySelector('nav');
+window.addEventListener('scroll', ()=>{
+  navEl.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive:true });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
