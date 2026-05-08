@@ -264,16 +264,20 @@ section{
   content:'';position:absolute;inset:0;
   background:linear-gradient(160deg,rgba(0,180,255,.08),transparent 60%);
 }
-.about-photo-placeholder{
-  display:flex;flex-direction:column;
-  align-items:center;gap:.75rem;
-  color:var(--muted);position:relative;z-index:1;
+.about-photo::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,180,255,.12), transparent 45%),
+    linear-gradient(135deg, rgba(255,255,255,.05) 25%, transparent 25%) 0 0/18px 18px,
+    linear-gradient(315deg, rgba(255,255,255,.04) 25%, transparent 25%) 0 0/18px 18px;
+  opacity:.55;
 }
-.about-photo-placeholder svg{opacity:.4}
-.about-photo-placeholder span{
-  font-family:'Space Mono',monospace;
-  font-size:.6rem;letter-spacing:.12em;
-  opacity:.5;
+.about-photo img{
+  max-width:92%;max-height:92%;
+  width:auto;height:auto;
+  object-fit:contain;object-position:center center;
+  position:relative;z-index:1;
+  filter:drop-shadow(0 16px 22px rgba(0,0,0,.45)) drop-shadow(0 0 18px rgba(0,180,255,.22));
 }
 /* Corners */
 .corner{position:absolute;width:20px;height:20px;border-color:var(--blue);border-style:solid;opacity:.6}
@@ -831,14 +835,7 @@ footer .f-name{color:var(--blue)}
     <div class="about-grid reveal">
       <div class="about-photo-wrap">
         <div class="about-photo">
-          <div class="about-photo-placeholder">
-            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="36" cy="26" r="16" stroke="#00b4ff" stroke-width="1.5" stroke-dasharray="5 3"/>
-              <path d="M8 68c0-15.464 12.536-28 28-28s28 12.536 28 28" stroke="#00b4ff" stroke-width="1.5" stroke-dasharray="5 3"/>
-            </svg>
-            <span>ADD YOUR PHOTO</span>
-            <span style="font-size:.55rem;opacity:.4">assets/Profile.png</span>
-          </div>
+          <img src="assets/Profile.png" alt="Henoshan Athimoolanathan portrait"/>
           <div class="corner tl"></div>
           <div class="corner tr"></div>
           <div class="corner bl"></div>
