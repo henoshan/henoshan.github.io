@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Projects — Henoshan Athimoolanathan"/>
+<title>Projects · Henoshan Athimoolanathan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles/base.css"/>
+<link rel="stylesheet" href="styles/components.css"/>
+<link rel="stylesheet" href="styles/sections.css"/>
+<link rel="stylesheet" href="styles/responsive.css"/>
+<link rel="stylesheet" href="styles/animations.css"/>
+<style>
+/* ── Page specific ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'Space Mono',monospace;font-size:.7rem;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:.12em;text-transform:uppercase;
+  transition:color .3s;margin-bottom:3rem;
+}
+.back-btn:hover{color:var(--blue)}
+.back-btn::before{content:'←';font-size:.9rem}
+
+.page-header{margin-bottom:4rem}
+.page-header .section-label{display:block;margin-bottom:.75rem}
+.page-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;line-height:1;
+  margin-bottom:1rem;
+}
+.page-title span{color:var(--blue)}
+.page-subtitle{
+  font-size:1.05rem;color:var(--text2);
+  max-width:55ch;line-height:1.8;
+}
+
+/* Project detail card */
+.pj-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  margin-bottom:3rem;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s, box-shadow .3s;
+}
+.pj-card:hover{
+  border-color:rgba(0,180,255,.4);
+  box-shadow:0 0 60px rgba(0,180,255,.06), 0 24px 64px rgba(0,0,0,.4);
+}
+.pj-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue2),var(--blue));
+}
+
+.pj-header{
+  padding:2.5rem 2.5rem 0;
+  display:flex;gap:1.5rem;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.pj-num{
+  font-family:'Space Mono',monospace;
+  font-size:.62rem;color:var(--blue);
+  letter-spacing:.25em;opacity:.5;
+  margin-bottom:.4rem;
+}
+.pj-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-weight:700;color:var(--text);
+  line-height:1.25;flex:1;
+}
+.pj-domain{
+  font-family:'Space Mono',monospace;
+  font-size:.65rem;color:var(--blue);
+  border:1px solid rgba(0,180,255,.3);
+  background:rgba(0,180,255,.06);
+  padding:.3rem .9rem;border-radius:3px;
+  white-space:nowrap;align-self:flex-start;
+  margin-top:.2rem;
+}
+
+.pj-body{padding:2rem 2.5rem}
+
+.pj-section-label{
+  font-family:'Space Mono',monospace;
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:.75rem;
+}
+
+.pj-desc{
+  color:var(--text2);font-size:1rem;
+  line-height:1.9;margin-bottom:2rem;
+  max-width:72ch;
+}
+
+.pj-highlights{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:.75rem;
+  margin-bottom:2rem;
+}
+.pj-highlight{
+  background:rgba(0,0,0,.25);
+  border:1px solid var(--border2);
+  padding:.9rem 1.1rem;
+  border-radius:4px;
+}
+.pj-highlight-val{
+  font-family:'Orbitron',monospace;
+  font-size:1.1rem;font-weight:700;
+  color:var(--blue);display:block;
+  margin-bottom:.2rem;
+}
+.pj-highlight-label{
+  font-family:'Space Mono',monospace;
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+.pj-tech{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  margin-bottom:2rem;
+}
+.pj-tech-tag{
+  font-family:'Space Mono',monospace;
+  font-size:.65rem;font-weight:700;
+  color:#90d8f8;
+  border:1px solid rgba(0,180,255,.5);
+  background:rgba(0,25,55,.8);
+  padding:.3rem 1rem;border-radius:4px;
+  letter-spacing:.06em;
+  transition:all .25s ease;
+}
+.pj-tech-tag:hover{
+  background:rgba(0,100,200,.4);
+  border-color:var(--blue);color:#fff;
+  transform:translateY(-2px);
+}
+
+.pj-footer{
+  border-top:1px solid var(--border);
+  padding:1.25rem 2.5rem;
+  display:flex;gap:1rem;flex-wrap:wrap;
+  align-items:center;
+}
+.pj-link{
+  font-family:'Space Mono',monospace;
+  font-size:.68rem;color:var(--blue);
+  text-decoration:none;
+  border:1px solid rgba(0,180,255,.35);
+  padding:.5rem 1.3rem;
+  border-radius:3px;
+  letter-spacing:.08em;
+  transition:all .3s;
+  display:inline-flex;align-items:center;gap:.5rem;
+}
+.pj-link:hover{
+  background:rgba(0,180,255,.08);
+  border-color:var(--blue);
+  box-shadow:0 4px 16px rgba(0,180,255,.15);
+  transform:translateY(-2px);
+}
+.pj-link.github{color:var(--text2);border-color:var(--border2)}
+.pj-link.github:hover{color:var(--blue);border-color:var(--blue)}
+
+/* Scroll offset for anchor links */
+.pj-anchor{
+  display:block;
+  position:relative;
+  top:-100px;
+  visibility:hidden;
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ANIMATED BG -->
+<canvas id="bg-canvas"></canvas>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HENOSHAN<span>//</span>Data Scientist</div>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#publications">Research</a>
+    <a href="index.html#awards">Awards</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Available for work
+  </div>
+</nav>
+
+<!-- MAIN -->
+<section style="padding-top:9rem;padding-bottom:6rem;">
+  <div class="container">
+
+    <a class="back-btn" href="index.html">Back to Portfolio</a>
+
+    <div class="page-header">
+      <span class="section-label">// All Projects</span>
+      <h1 class="page-title">My <span>Projects</span></h1>
+      <p class="page-subtitle">
+        End-to-end AI/ML systems built across healthcare, finance, IoT, and research domains.
+        Each project represents a full development cycle from ideation through deployment.
+      </p>
+    </div>
+
+    <!-- ── PROJECT 01 ── -->
+    <span class="pj-anchor" id="p01"></span>
+    <div class="pj-card reveal">
+      <div class="pj-header">
+        <div style="flex:1">
+          <div class="pj-num">PROJECT_01</div>
+          <div class="pj-title">Predictive Health Analytics Engine</div>
+        </div>
+        <div class="pj-domain">Healthcare · ML</div>
+      </div>
+      <div class="pj-body">
+
+        <div class="pj-section-label">// Overview</div>
+        <p class="pj-desc">
+          An end-to-end machine learning system designed to predict patient readmission risk
+          in real time. Integrated directly with clinical dashboards across three hospital
+          networks, the system processes patient vitals, lab results, and historical records
+          to output risk scores with 94% AUC — enabling clinicians to prioritise high-risk
+          patients before discharge.
+        </p>
+
+        <div class="pj-section-label">// Key Metrics</div>
+        <div class="pj-highlights">
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">94%</span>
+            <span class="pj-highlight-label">AUC Score</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">3</span>
+            <span class="pj-highlight-label">Hospital Networks</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">Real-Time</span>
+            <span class="pj-highlight-label">Prediction Serving</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">HIPAA</span>
+            <span class="pj-highlight-label">Compliant</span>
+          </div>
+        </div>
+
+        <div class="pj-section-label">// Tech Stack</div>
+        <div class="pj-tech">
+          <span class="pj-tech-tag">PyTorch</span>
+          <span class="pj-tech-tag">FastAPI</span>
+          <span class="pj-tech-tag">AWS SageMaker</span>
+          <span class="pj-tech-tag">Docker</span>
+          <span class="pj-tech-tag">PostgreSQL</span>
+          <span class="pj-tech-tag">Scikit-learn</span>
+          <span class="pj-tech-tag">Pandas</span>
+          <span class="pj-tech-tag">Redis</span>
+        </div>
+
+      </div>
+      <div class="pj-footer">
+        <a class="pj-link github" href="#" target="_blank">⬡ &nbsp;GitHub Repo</a>
+        <a class="pj-link" href="#" target="_blank">[ LIVE DEMO → ]</a>
+      </div>
+    </div>
+
+    <!-- ── PROJECT 02 ── -->
+    <span class="pj-anchor" id="p02"></span>
+    <div class="pj-card reveal">
+      <div class="pj-header">
+        <div style="flex:1">
+          <div class="pj-num">PROJECT_02</div>
+          <div class="pj-title">NLP-Powered Market Intelligence</div>
+        </div>
+        <div class="pj-domain">FinTech · NLP</div>
+      </div>
+      <div class="pj-body">
+
+        <div class="pj-section-label">// Overview</div>
+        <p class="pj-desc">
+          A large-scale NLP pipeline that scrapes, classifies, and sentiment-analyses over
+          2 million financial news articles daily. The extracted signals feed into an
+          algorithmic trading strategy that consistently outperformed the market benchmark
+          by 18% annually — combining transformer-based models with real-time stream
+          processing infrastructure.
+        </p>
+
+        <div class="pj-section-label">// Key Metrics</div>
+        <div class="pj-highlights">
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">2M+</span>
+            <span class="pj-highlight-label">Articles / Day</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">+18%</span>
+            <span class="pj-highlight-label">Annual Alpha</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">Real-Time</span>
+            <span class="pj-highlight-label">Stream Processing</span>
+          </div>
+        </div>
+
+        <div class="pj-section-label">// Tech Stack</div>
+        <div class="pj-tech">
+          <span class="pj-tech-tag">BERT</span>
+          <span class="pj-tech-tag">Kafka</span>
+          <span class="pj-tech-tag">Apache Airflow</span>
+          <span class="pj-tech-tag">GCP</span>
+          <span class="pj-tech-tag">Redis</span>
+          <span class="pj-tech-tag">Python</span>
+          <span class="pj-tech-tag">HuggingFace</span>
+        </div>
+
+      </div>
+      <div class="pj-footer">
+        <a class="pj-link github" href="#" target="_blank">⬡ &nbsp;GitHub Repo</a>
+        <a class="pj-link" href="#" target="_blank">[ LIVE DEMO → ]</a>
+      </div>
+    </div>
+
+    <!-- ── PROJECT 03 ── -->
+    <span class="pj-anchor" id="p03"></span>
+    <div class="pj-card reveal">
+      <div class="pj-header">
+        <div style="flex:1">
+          <div class="pj-num">PROJECT_03</div>
+          <div class="pj-title">Real-Time Anomaly Detection System</div>
+        </div>
+        <div class="pj-domain">IoT · Anomaly Detection</div>
+      </div>
+      <div class="pj-body">
+
+        <div class="pj-section-label">// Overview</div>
+        <p class="pj-desc">
+          An unsupervised anomaly detection system for industrial IoT sensor streams,
+          powered by deep autoencoders. Processing thousands of sensor readings per second,
+          the system identifies manufacturing faults in real time while dramatically reducing
+          the false alarm rate that had been causing costly production stoppages.
+        </p>
+
+        <div class="pj-section-label">// Key Metrics</div>
+        <div class="pj-highlights">
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">60%</span>
+            <span class="pj-highlight-label">False Alarm Reduction</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">99.2%</span>
+            <span class="pj-highlight-label">Precision</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">ms</span>
+            <span class="pj-highlight-label">Latency</span>
+          </div>
+        </div>
+
+        <div class="pj-section-label">// Tech Stack</div>
+        <div class="pj-tech">
+          <span class="pj-tech-tag">Autoencoder</span>
+          <span class="pj-tech-tag">Apache Flink</span>
+          <span class="pj-tech-tag">Redis</span>
+          <span class="pj-tech-tag">Python</span>
+          <span class="pj-tech-tag">PyTorch</span>
+          <span class="pj-tech-tag">Kafka</span>
+        </div>
+
+      </div>
+      <div class="pj-footer">
+        <a class="pj-link github" href="#" target="_blank">⬡ &nbsp;GitHub Repo</a>
+        <a class="pj-link" href="#" target="_blank">[ LIVE DEMO → ]</a>
+      </div>
+    </div>
+
+    <!-- ── PROJECT 04 ── -->
+    <span class="pj-anchor" id="p04"></span>
+    <div class="pj-card reveal">
+      <div class="pj-header">
+        <div style="flex:1">
+          <div class="pj-num">PROJECT_04</div>
+          <div class="pj-title">LLM-Powered Research Assistant</div>
+        </div>
+        <div class="pj-domain">Research · LLM</div>
+      </div>
+      <div class="pj-body">
+
+        <div class="pj-section-label">// Overview</div>
+        <p class="pj-desc">
+          A Retrieval-Augmented Generation (RAG) system that enables semantic search and
+          natural language Q&amp;A over 50,000+ academic papers. Integrated with a university
+          research portal, it allows researchers to query the entire paper corpus in plain
+          English and receive cited, contextual answers — reducing literature review time
+          by 70%.
+        </p>
+
+        <div class="pj-section-label">// Key Metrics</div>
+        <div class="pj-highlights">
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">50K+</span>
+            <span class="pj-highlight-label">Papers Indexed</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">70%</span>
+            <span class="pj-highlight-label">Time Saved</span>
+          </div>
+          <div class="pj-highlight">
+            <span class="pj-highlight-val">RAG</span>
+            <span class="pj-highlight-label">Architecture</span>
+          </div>
+        </div>
+
+        <div class="pj-section-label">// Tech Stack</div>
+        <div class="pj-tech">
+          <span class="pj-tech-tag">LangChain</span>
+          <span class="pj-tech-tag">Pinecone</span>
+          <span class="pj-tech-tag">OpenAI GPT-4</span>
+          <span class="pj-tech-tag">FastAPI</span>
+          <span class="pj-tech-tag">Python</span>
+          <span class="pj-tech-tag">Vector DB</span>
+        </div>
+
+      </div>
+      <div class="pj-footer">
+        <a class="pj-link github" href="#" target="_blank">⬡ &nbsp;GitHub Repo</a>
+        <a class="pj-link" href="#" target="_blank">[ LIVE DEMO → ]</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <span style="color:var(--blue)">◈</span> &nbsp;
+  <span class="f-name">Henoshan Athimoolanathan</span>
+  &nbsp;·&nbsp; Data Scientist &amp; AI Researcher
+  &nbsp; <span style="color:var(--blue)">◈</span>
+</footer>
+
+<script>
+/* CURSOR */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.transform='translate(-50%,-50%) scale(1.8)';ring.style.opacity='.8'});
+  el.addEventListener('mouseleave',()=>{ring.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='.5'});
+});
+
+/* CANVAS BG */
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();
+window.addEventListener('resize',resize);
+function drawGrid(){
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(0,40,80,0.5)';ctx.lineWidth=.4;
+  const gs=70;
+  for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+  for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+}
+const particles=[];
+for(let i=0;i<55;i++) particles.push({x:Math.random()*1920,y:Math.random()*1080,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.8+.4,a:Math.random()*.6+.1});
+function drawParticles(){
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(0,180,255,${p.a})`;ctx.fill();
+  });
+  for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++){
+    const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<130){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(0,100,220,${.18*(1-dist/130)})`;ctx.lineWidth=.5;ctx.stroke();}
+  }
+}
+(function animate(){drawGrid();drawParticles();requestAnimationFrame(animate);})();
+
+/* SCROLL REVEAL */
+const reveals=document.querySelectorAll('.reveal');
+new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:.08}).observe?.[0] || reveals.forEach(r=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:.08}).observe(r));
+
+/* NAV scroll */
+const navEl=document.querySelector('nav');
+window.addEventListener('scroll',()=>{navEl.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
+</script>
+</body>
+</html>
