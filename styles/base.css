@@ -17,7 +17,7 @@
   --border:#0d2a44;
   --border2:#142e50;
   --glow:0 0 20px #00b4ff44,0 0 60px #0055ff22;
-  --glow-sm:0 0 10px #00b4ff33;
+  --glow-sm:0 0 10px #00b4ff44, 0 0 20px #00b4ff11;
 }
 html{scroll-behavior:smooth;font-size:16px}
 body{
