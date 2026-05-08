@@ -95,7 +95,7 @@ nav.scrolled {
 ============================================================ */
 .section-title {
   position: relative;
-  display: inline-block;
+  display: block;
 }
 .section-title::after {
   content: '';
