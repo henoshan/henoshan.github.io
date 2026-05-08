@@ -264,16 +264,18 @@ section{
   content:'';position:absolute;inset:0;
   background:linear-gradient(160deg,rgba(0,180,255,.08),transparent 60%);
 }
-.about-photo-placeholder{
-  display:flex;flex-direction:column;
-  align-items:center;gap:.75rem;
-  color:var(--muted);position:relative;z-index:1;
+.about-photo::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,180,255,.12), transparent 45%),
+    linear-gradient(135deg, rgba(255,255,255,.05) 25%, transparent 25%) 0 0/18px 18px,
+    linear-gradient(315deg, rgba(255,255,255,.04) 25%, transparent 25%) 0 0/18px 18px;
+  opacity:.55;
 }
-.about-photo-placeholder svg{opacity:.4}
-.about-photo-placeholder span{
-  font-family:'Space Mono',monospace;
-  font-size:.6rem;letter-spacing:.12em;
-  opacity:.5;
+.about-photo img{
+  width:100%;height:100%;object-fit:contain;object-position:center bottom;
+  position:relative;z-index:1;padding:.6rem;
+  filter:drop-shadow(0 18px 26px rgba(0,0,0,.5)) drop-shadow(0 0 24px rgba(0,180,255,.25));
 }
 /* Corners */
 .corner{position:absolute;width:20px;height:20px;border-color:var(--blue);border-style:solid;opacity:.6}
@@ -831,7 +833,7 @@ footer .f-name{color:var(--blue)}
     <div class="about-grid reveal">
       <div class="about-photo-wrap">
         <div class="about-photo">
-          <img src="assets/Profile.png" alt="Henoshan Athimoolanathan portrait" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1;"/>
+          <img src="assets/Profile.png" alt="Henoshan Athimoolanathan portrait"/>
           <div class="corner tl"></div>
           <div class="corner tr"></div>
           <div class="corner bl"></div>
