@@ -1,0 +1,485 @@
+/* ============================================================
+   ANIMATIONS.CSS — Dynamic visual layer for Henoshan's portfolio
+   Add this as: <link rel="stylesheet" href="styles/animations.css"/>
+   Place that line AFTER responsive.css in index.html <head>
+============================================================ */
+
+/* ============================================================
+   CSS CUSTOM PROPERTIES — Animation timings & effects
+============================================================ */
+:root {
+  --transition-fast: .2s cubic-bezier(.4,0,.2,1);
+  --transition-med:  .4s cubic-bezier(.4,0,.2,1);
+  --transition-slow: .8s cubic-bezier(.4,0,.2,1);
+  --glow-text: 0 0 20px #00b4ff66, 0 0 40px #00b4ff22;
+  --glow-strong: 0 0 30px #00b4ff88, 0 0 80px #0055ff44;
+  --border-animated: linear-gradient(130deg,rgba(0,180,255,.4),transparent 40%,transparent 60%,rgba(0,85,255,.4));
+}
+
+/* ============================================================
+   SCROLL REVEAL — Staggered children
+============================================================ */
+.reveal { opacity:0; transform:translateY(36px); transition:opacity .9s ease, transform .9s ease; }
+.reveal.visible { opacity:1; transform:none; }
+
+.reveal > *:nth-child(1) { transition-delay:.05s }
+.reveal > *:nth-child(2) { transition-delay:.12s }
+.reveal > *:nth-child(3) { transition-delay:.19s }
+.reveal > *:nth-child(4) { transition-delay:.26s }
+.reveal > *:nth-child(5) { transition-delay:.33s }
+
+/* ============================================================
+   NAV — Frosted glass with animated border
+============================================================ */
+nav {
+  transition: background var(--transition-med), box-shadow var(--transition-med);
+}
+nav.scrolled {
+  background: rgba(5,8,15,.97) !important;
+  box-shadow: 0 1px 0 var(--border), 0 8px 32px rgba(0,0,0,.6);
+}
+.nav-links a {
+  transition: color .25s, text-shadow .25s, letter-spacing .25s;
+}
+.nav-links a:hover { letter-spacing:.22em }
+.nav-links a.active {
+  color: var(--blue) !important;
+  text-shadow: var(--glow-text);
+}
+.nav-links a.active::after { transform:scaleX(1) !important }
+
+/* ============================================================
+   HERO — Enhanced glow + floating data nodes
+============================================================ */
+.hero-eyebrow {
+  background: linear-gradient(90deg, transparent, rgba(0,180,255,.06), transparent);
+  border-left: 2px solid var(--blue);
+  padding: .3rem .8rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.hero-name .first {
+  filter: drop-shadow(0 0 32px #00b4ff55);
+  transition: filter var(--transition-med);
+}
+.hero-name .first:hover { filter: drop-shadow(0 0 48px #00b4ffaa) }
+
+.hero-desc { border-left: 2px solid rgba(0,180,255,.18); padding-left: 1.25rem; }
+
+/* CTA buttons — shimmer sweep on hover */
+.btn { isolation: isolate }
+.btn-primary {
+  box-shadow: 0 4px 24px rgba(0,180,255,.18);
+  transition: background .3s, box-shadow .3s, transform .2s;
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow: 0 8px 40px rgba(0,180,255,.35) }
+.btn-outline {
+  transition: background .3s, box-shadow .3s, transform .2s, color .3s;
+}
+.btn-outline:hover { transform:translateY(-2px) }
+
+/* Stats — count-up feel via scale pop on visibility */
+.stat-num {
+  display: block;
+  transition: transform .3s, color .3s;
+  transform-origin: left bottom;
+}
+.stat-block:hover .stat-num {
+  transform: scale(1.08);
+  color: #fff;
+  text-shadow: var(--glow-strong);
+}
+
+/* ============================================================
+   SECTION TITLES — Underline sweep
+============================================================ */
+.section-title {
+  position: relative;
+  display: inline-block;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -.5rem;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--blue), transparent);
+  transition: width 1s ease;
+}
+.reveal.visible .section-title::after { width: 60% }
+
+/* ============================================================
+   DIVIDER — Animated pulse
+============================================================ */
+.divider {
+  position: relative;
+  overflow: hidden;
+}
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,180,255,.5), transparent);
+  animation: dividerPulse 6s ease infinite;
+}
+@keyframes dividerPulse {
+  0%   { left: -60% }
+  100% { left: 160% }
+}
+
+/* ============================================================
+   ABOUT PHOTO — Corner animation + hover zoom
+============================================================ */
+.about-photo {
+  transition: box-shadow var(--transition-med);
+  overflow: hidden;
+}
+.about-photo:hover {
+  box-shadow: 0 0 40px rgba(0,180,255,.12), 0 0 80px rgba(0,85,255,.08);
+}
+.about-photo img {
+  transition: transform .6s ease;
+}
+.about-photo:hover img { transform: scale(1.03) }
+
+.corner {
+  transition: width .4s ease, height .4s ease, opacity .4s ease;
+}
+.about-photo:hover .corner {
+  width: 30px; height: 30px; opacity: 1;
+}
+
+.about-badge {
+  animation: badgePulse 3s ease infinite;
+}
+@keyframes badgePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,180,255,.0) }
+  50%      { box-shadow: 0 0 0 8px rgba(0,180,255,.08) }
+}
+
+.tag {
+  transition: all .25s ease;
+  position: relative;
+}
+.tag:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,180,255,.15);
+}
+
+/* ============================================================
+   TIMELINE — Line draw on scroll + item entrance
+============================================================ */
+.timeline::before {
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.4s cubic-bezier(.4,0,.2,1);
+}
+.reveal.visible .timeline::before { transform: scaleY(1) }
+
+.tl-item {
+  transition: opacity .5s ease, transform .5s ease;
+}
+.tl-item:hover {
+  background: rgba(0,180,255,.02);
+  border-radius: 4px;
+}
+
+.tl-dot {
+  transition: background .3s, box-shadow .3s, transform .3s;
+}
+.tl-item:hover .tl-dot {
+  transform: rotate(45deg) scale(1.3);
+  background: var(--blue);
+  box-shadow: 0 0 16px var(--blue);
+}
+
+.tl-role {
+  transition: color .3s, text-shadow .3s;
+}
+.tl-item:hover .tl-role {
+  color: #e8f7ff;
+  text-shadow: 0 0 12px rgba(0,180,255,.3);
+}
+
+.tl-tag {
+  transition: transform .25s, box-shadow .25s;
+}
+.tl-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,180,255,.2);
+}
+
+/* ============================================================
+   SKILL CARDS — Glow border + bar shimmer
+============================================================ */
+.skill-card {
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  isolation: isolate;
+}
+.skill-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 48px rgba(0,0,0,.4), 0 0 24px rgba(0,180,255,.1);
+  border-color: var(--blue) !important;
+}
+
+/* Animated top bar on card */
+.skill-card::before {
+  transition: opacity .3s;
+}
+.skill-card:hover::before { opacity: 1 }
+
+/* Skill bar fill glow */
+.skill-fill {
+  position: relative;
+  overflow: visible;
+}
+.skill-fill::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: 0;
+  width: 30%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(0,180,255,.4));
+  animation: barShimmer 2s ease infinite;
+  border-radius: 2px;
+}
+@keyframes barShimmer {
+  0%,100% { opacity: 0 }
+  50%      { opacity: 1 }
+}
+
+.skill-name { transition: color .3s }
+.skill-row:hover .skill-name { color: var(--text) }
+
+/* ============================================================
+   PROJECT CARDS — Lift + scan line effect
+============================================================ */
+.project-card {
+  transition: border-color .3s, transform .4s cubic-bezier(.4,0,.2,1), box-shadow .4s;
+  isolation: isolate;
+  overflow: hidden;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0,180,255,.04) 50%,
+    transparent 100%
+  );
+  transition: top .6s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.project-card:hover::before { top: 100% }
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 64px rgba(0,0,0,.5), 0 0 32px rgba(0,180,255,.12);
+}
+
+.project-title { transition: color .3s, text-shadow .3s }
+.project-card:hover .project-title {
+  color: #e8f7ff;
+  text-shadow: 0 0 10px rgba(0,180,255,.25);
+}
+
+.p-tag {
+  transition: transform .2s, box-shadow .2s, color .2s;
+}
+.p-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,180,255,.2);
+  color: #e8f7ff;
+}
+
+.project-link {
+  position: relative;
+  transition: text-shadow .3s, letter-spacing .3s;
+}
+.project-link:hover { letter-spacing: .1em }
+.project-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--blue);
+  transition: width .3s ease;
+}
+.project-link:hover::after { width: 100% }
+
+/* ============================================================
+   PUBLICATION CARDS — Left border pulse
+============================================================ */
+.pub-card {
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  border-left: 2px solid transparent;
+}
+.pub-card:hover {
+  border-left-color: var(--blue);
+  transform: translateX(6px);
+  box-shadow: -4px 0 20px rgba(0,180,255,.08), 0 8px 32px rgba(0,0,0,.3);
+}
+
+.pub-year {
+  transition: transform .3s, text-shadow .3s;
+}
+.pub-card:hover .pub-year {
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(0,180,255,.5);
+}
+
+.pub-title { transition: color .3s }
+.pub-card:hover .pub-title { color: #e8f7ff }
+
+/* ============================================================
+   AWARD CARD — Featured glow entrance
+============================================================ */
+.award-featured {
+  transition: box-shadow .4s, transform .4s;
+}
+.award-featured:hover {
+  box-shadow: 0 0 60px rgba(0,180,255,.12), 0 24px 64px rgba(0,0,0,.5);
+  transform: translateY(-4px);
+}
+.award-featured-photo img {
+  transition: transform .6s ease, filter .6s ease;
+}
+.award-featured:hover .award-featured-photo img {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+/* ============================================================
+   CONTACT — Email glow pulse
+============================================================ */
+.contact-email {
+  position: relative;
+  transition: text-shadow .3s, letter-spacing .3s;
+}
+.contact-email::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  transform: translateX(-50%);
+  transition: width .4s ease;
+}
+.contact-email:hover::after { width: 100% }
+.contact-email:hover { letter-spacing: .06em }
+
+.social-btn {
+  transition: color .3s, border-color .3s, background .3s, transform .25s, box-shadow .25s;
+}
+.social-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,180,255,.15);
+}
+
+/* ============================================================
+   SECTION BACKGROUNDS — Depth gradient per section
+============================================================ */
+#hero {
+  background: radial-gradient(ellipse 80% 60% at 10% 40%, rgba(0,85,255,.07) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 60%, rgba(0,180,255,.05) 0%, transparent 70%);
+}
+#about   { background-image: linear-gradient(180deg, transparent, rgba(0,20,48,.3), transparent) }
+#experience { background-image: linear-gradient(180deg, transparent, rgba(0,15,36,.35), transparent) }
+#skills  { background-image: linear-gradient(180deg, transparent, rgba(0,20,48,.3), transparent) }
+#projects{ background-image: linear-gradient(180deg, transparent, rgba(0,15,36,.35), transparent) }
+#publications { background-image: linear-gradient(180deg, transparent, rgba(0,20,48,.3), transparent) }
+#awards  { background-image: linear-gradient(180deg, transparent, rgba(0,15,36,.35), transparent) }
+#contact { background-image: linear-gradient(180deg, transparent, rgba(0,20,48,.4), transparent) }
+
+/* ============================================================
+   CURSOR — Enhanced states
+============================================================ */
+#cursor {
+  transition: transform .1s, background .2s, width .2s, height .2s;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor {
+  transform: translate(-50%,-50%) scale(1.5);
+  background: #fff;
+}
+
+/* ============================================================
+   FLOATING PARTICLES — Hero data nodes
+============================================================ */
+@keyframes floatA {
+  0%,100% { transform:translate(0,0) rotate(0deg); opacity:.6 }
+  33%      { transform:translate(12px,-18px) rotate(120deg); opacity:.9 }
+  66%      { transform:translate(-8px,10px) rotate(240deg); opacity:.5 }
+}
+@keyframes floatB {
+  0%,100% { transform:translate(0,0) rotate(45deg); opacity:.4 }
+  50%      { transform:translate(-14px,-12px) rotate(225deg); opacity:.8 }
+}
+.hero-float-node {
+  position:absolute;
+  pointer-events:none;
+  border:1px solid rgba(0,180,255,.3);
+  animation: floatA 8s ease infinite;
+}
+.hero-float-node:nth-child(2) { animation: floatB 11s ease infinite }
+.hero-float-node:nth-child(3) { animation: floatA 9s .5s ease infinite }
+
+/* ============================================================
+   PAGE LOAD INTRO — Fade in body
+============================================================ */
+@keyframes pageLoad {
+  from { opacity:0 }
+  to   { opacity:1 }
+}
+body { animation: pageLoad .6s ease both }
+
+/* ============================================================
+   FOOTER — Subtle glow line
+============================================================ */
+footer {
+  position: relative;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-dim), var(--blue), var(--blue-dim), transparent);
+  opacity: .5;
+}
+
+/* ============================================================
+   SCROLLBAR — Styled
+============================================================ */
+::-webkit-scrollbar { width: 4px }
+::-webkit-scrollbar-track { background: var(--bg) }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--blue2), var(--blue));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--blue) }
+
+/* ============================================================
+   SELECTION — Brand colour
+============================================================ */
+::selection {
+  background: rgba(0,180,255,.25);
+  color: #fff;
+}
+
+/* ============================================================
+   FOCUS VISIBLE — Accessibility
+============================================================ */
+:focus-visible {
+  outline: 1px solid var(--blue);
+  outline-offset: 3px;
+}
