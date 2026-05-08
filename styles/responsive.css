@@ -12,3 +12,20 @@
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Reduce motion — respect user preference */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
+
+/* Improve card readability on mobile */
+@media (max-width: 760px){
+  .hero-desc{ border-left:none; padding-left:0 }
+  .pub-card:hover{ transform:none }
+  .project-card:hover{ transform:translateY(-4px) }
+  .skill-card:hover{ transform:translateY(-2px) }
+}
