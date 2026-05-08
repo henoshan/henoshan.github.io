@@ -38,3 +38,60 @@
   border-bottom:1px dashed rgba(0,180,255,.45);
   padding-bottom:.3rem;
 }
+
+/* Hero desc — left accent */
+.hero-desc{
+  border-left:2px solid rgba(0,180,255,.2);
+  padding-left:1.2rem;
+  transition:border-color .3s;
+}
+.hero-desc:hover{border-left-color:rgba(0,180,255,.6)}
+
+/* Contact email — dashed underline */
+#contact .contact-email{
+  border-bottom:1px dashed rgba(0,180,255,.45);
+  padding-bottom:.3rem;
+}
+
+/* Stat blocks — top accent on hover */
+.stat-block{
+  position:relative;
+  padding-top:.5rem;
+}
+.stat-block::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:0;height:1px;
+  background:var(--blue);
+  transition:width .4s ease;
+}
+.stat-block:hover::before{ width:100% }
+
+/* Timeline line — glowing dot on active item */
+.tl-item::before{
+  content:'';
+  position:absolute;
+  left:-2.4rem;top:.4rem;
+  width:12px;height:12px;
+  border-radius:50%;
+  background:transparent;
+  transition:box-shadow .3s;
+}
+.tl-item:hover::before{
+  box-shadow:0 0 0 4px rgba(0,180,255,.12);
+}
+
+/* Nav logo glow */
+.nav-logo{
+  text-shadow:0 0 18px rgba(0,180,255,.38);
+  transition:text-shadow .3s;
+}
+.nav-logo:hover{
+  text-shadow:0 0 28px rgba(0,180,255,.7);
+}
+
+/* Social buttons lift */
+.social-btn:hover,.tag:hover,.p-tag:hover,.tl-tag:hover{
+  transform:translateY(-2px);
+}
