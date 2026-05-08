@@ -39,10 +39,46 @@ section .container{
   position:absolute;
   inset:0;
   border:1px solid transparent;
-  background:linear-gradient(130deg,rgba(0,180,255,.2),transparent 35%,transparent 70%,rgba(0,85,255,.2)) border-box;
+  background:linear-gradient(130deg,rgba(0,180,255,.3),transparent 35%,transparent 70%,rgba(0,85,255,.3)) border-box;
   -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;
   mask-composite:exclude;
   pointer-events:none;
-  opacity:.35;
+  opacity:0;
+  transition:opacity .4s ease;
+}
+.project-card:hover::after,.skill-card:hover::after,.pub-card:hover::after,.award-card:hover::after{
+  opacity:1;
+}
+
+/* Skill bar track — thicker + rounded */
+.skill-track{
+  height:3px;
+  border-radius:3px;
+}
+.skill-fill{
+  border-radius:3px;
+}
+
+/* Section label — animated left bar */
+.section-label{
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+}
+.section-label::before{
+  content:'';
+  display:inline-block;
+  width:18px;height:1px;
+  background:var(--blue);
+  opacity:.7;
+}
+
+/* Pub badge — pulse */
+.pub-badge{
+  animation:badgeBlink 3s ease infinite;
+}
+@keyframes badgeBlink{
+  0%,100%{opacity:1}
+  50%{opacity:.6}
 }
