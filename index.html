@@ -251,73 +251,93 @@ section{
   grid-template-columns:320px 1fr;
   gap:5rem;align-items:start;
 }
-.about-photo-wrap{position:relative}
-.about-photo{
-  width:100%;aspect-ratio:3/4;
-  background:transparent;
-  border:none;
-  position:relative;overflow:visible;
-  display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:1rem;color:var(--muted);
+/* ── ABOUT PHOTO WRAP ── */
+.about-photo-wrap{
+  position:relative;
+  width:100%;
+  min-height:500px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
 }
-.about-photo::before{
-  content:'';
-  position:absolute;
-  width:80%;
-  aspect-ratio:1/1;
-  left:50%;
-  top:46%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  border:10px solid rgba(0,180,255,.55);
-  box-shadow:
-    0 0 20px rgba(0,180,255,.55),
-    0 0 45px rgba(0,180,255,.45),
-    inset 0 0 25px rgba(0,180,255,.3);
-  z-index:0;
-  animation:haloPulse 3.5s ease-in-out infinite;
-}
-.about-photo img{position:relative;z-index:1;object-fit:contain}
-.about-photo-placeholder{
-  display:flex;flex-direction:column;
-  align-items:center;gap:.75rem;
-  color:var(--muted);position:relative;z-index:1;
-}
-.about-photo-placeholder svg{opacity:.4}
-.about-photo-placeholder span{
-  font-family:'Space Mono',monospace;
-  font-size:.6rem;letter-spacing:.12em;
-  opacity:.5;
-}
-/* Corners */
-.corner{position:absolute;width:20px;height:20px;border-color:var(--blue);border-style:solid;opacity:.6}
-.corner.tl{top:0;left:0;border-width:2px 0 0 2px}
-.corner.tr{top:0;right:0;border-width:2px 2px 0 0}
-.corner.bl{bottom:0;left:0;border-width:0 0 2px 2px}
-.corner.br{bottom:0;right:0;border-width:0 2px 2px 0}
 
+/* Person layer — starts below, rises on scroll */
+.about-person{
+  position:absolute;
+  bottom:18%; left:50%;
+  transform:translateX(-50%) translateY(120px);
+  opacity:0;
+  width:100%;
+  z-index:4; /* in front of all ring layers */
+  transition:transform 1.6s cubic-bezier(.16,1,.3,1), opacity 1.2s ease;
+}
+.about-person img{
+  width:110%; /* My size */
+  display:block;
+  object-fit:contain;
+  filter:drop-shadow(0 0 32px rgba(0,180,255,.15));
+}
+.about-person.risen{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
+
+/* Ring canvas layers:
+   ring-back  z=1  (behind person — dim bottom arc)
+   person     z=2  (the human)
+   ring-front z=3  (in front of person — bright top arc + glow)
+*/
+/* Ring Size */
+#ring-back{
+  position:absolute;
+  bottom:11%;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  z-index:1;
+  pointer-events:none;
+}
+#ring-front{
+  position:absolute;
+  bottom:11%;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  z-index:3;
+  pointer-events:none;
+}
+
+/* Badge floats in front of everything */
 .about-badge{
-  position:absolute;bottom:-1.5rem;right:-1.5rem;
-  width:110px;height:110px;
-  background:var(--bg4);border:1px solid var(--blue-dim);
+  position:absolute;
+  bottom:16%;
+  right:0;
+  z-index:5;
+  width:105px;height:105px;
+  background:rgba(5,8,15,.92);
+  border:1px solid var(--blue);
+  box-shadow:0 0 20px rgba(0,180,255,.4), 0 8px 32px rgba(0,0,0,.7);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:.2rem;
+  gap:.25rem;
+  backdrop-filter:blur(10px);
+  animation:badgeFloat 4s ease-in-out infinite;
 }
-
-@keyframes haloPulse{
-  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8}
-  50%{transform:translate(-50%,-50%) scale(1.06);opacity:1}
+@keyframes badgeFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
 }
 .about-badge-num{
   font-family:'Orbitron',monospace;
-  font-size:1.8rem;font-weight:900;color:var(--blue);
+  font-size:1.9rem;font-weight:900;color:var(--blue);
+  text-shadow:0 0 16px rgba(0,180,255,.8);
 }
 .about-badge-label{
   font-family:'Space Mono',monospace;
-  font-size:.55rem;color:var(--muted);
+  font-size:.52rem;color:var(--text2);
   letter-spacing:.08em;text-align:center;
   text-transform:uppercase;
+  line-height:1.4;
 }
 
 .about-text h2{
@@ -848,14 +868,25 @@ footer .f-name{color:var(--blue)}
 <section id="about">
   <div class="container">
     <div class="about-grid reveal">
-      <div class="about-photo-wrap">
-        <div class="about-photo">
-          <img src="assets/Profile.png" alt="Henoshan Athimoolanathan portrait" style="width:100%;height:100%;"/>
+      <div class="about-photo-wrap" id="photo-wrap">
+
+        <!-- z=1: dim back arc of ring (behind person) -->
+        <canvas id="ring-back"></canvas>
+
+        <!-- z=2: person rises through ring -->
+        <div class="about-person" id="about-person">
+          <img src="assets/Profile.png" alt="Henoshan Athimoolanathan"/>
         </div>
+
+        <!-- z=3: bright front arc of ring (in front of person) -->
+        <canvas id="ring-front"></canvas>
+
+        <!-- z=5: badge floats in front -->
         <div class="about-badge">
           <span class="about-badge-num">3+</span>
           <span class="about-badge-label">Years in AI/ML</span>
         </div>
+
       </div>
       <div class="about-text">
         <p class="section-label">// 01 &nbsp;&nbsp; About Me</p>
@@ -1144,16 +1175,18 @@ footer .f-name{color:var(--blue)}
       <div class="project-card" onclick="window.location='projects.html#p01'" style="cursor:pointer;">
         <div class="project-top">
           <div class="project-num">PROJECT_01</div>
-          <div class="project-title">Predictive Health Analytics Engine</div>
+          <div class="project-title">Enhanced Multimodal Interaction for Service Robots  using Generative AI</div>
         </div>
         <div class="project-tech">
+          <span class="p-tag">LLM</span>
+          <span class="p-tag">VLM</span>
+          <span class="p-tag">Computer Vision</span>
           <span class="p-tag">PyTorch</span>
-          <span class="p-tag">FastAPI</span>
-          <span class="p-tag">AWS</span>
-          <span class="p-tag">Docker</span>
+          <span class="p-tag">HuggingFace</span>
+          <span class="p-tag">LangChain</span>
         </div>
         <div class="project-footer">
-          <span class="project-domain">Healthcare · ML</span>
+          <span class="project-domain">Multimodal AI · LLM · Robotics</span>
           <a class="project-link" href="projects.html#p01">[ DETAILS → ]</a>
         </div>
       </div>
@@ -1161,16 +1194,16 @@ footer .f-name{color:var(--blue)}
       <div class="project-card" onclick="window.location='projects.html#p02'" style="cursor:pointer;">
         <div class="project-top">
           <div class="project-num">PROJECT_02</div>
-          <div class="project-title">NLP-Powered Market Intelligence</div>
+          <div class="project-title">StyleForge.ai: Gen AI & LLM powered costume designing platform</div>
         </div>
         <div class="project-tech">
-          <span class="p-tag">BERT</span>
-          <span class="p-tag">Kafka</span>
-          <span class="p-tag">GCP</span>
-          <span class="p-tag">Airflow</span>
+          <span class="p-tag">LLM</span>
+          <span class="p-tag">Stable Diffusion</span>
+          <span class="p-tag">UI/UX</span>
+          <span class="p-tag">PyTorch</span>
         </div>
         <div class="project-footer">
-          <span class="project-domain">FinTech · NLP</span>
+          <span class="project-domain">Fashion Design · LLM · Gen AI</span>
           <a class="project-link" href="projects.html#p02">[ DETAILS → ]</a>
         </div>
       </div>
@@ -1316,7 +1349,7 @@ footer .f-name{color:var(--blue)}
     <h2 class="section-title">Awards &amp; <span>Honors</span></h2>
     <div class="awards-grid" style="grid-template-columns:1fr">
 
-      <div class="award-card award-featured">
+      <div class="award-card award-featured" style="max-width:860px;margin:0 auto;">
 
         <!-- LEFT: photo -->
         <div class="award-featured-photo">
@@ -1360,6 +1393,79 @@ footer .f-name{color:var(--blue)}
           </div>
         </div>
 
+      </div>
+
+      <div class="award-card award-featured" style="max-width:860px;margin:0 auto;">
+
+        <!-- LEFT: photo -->
+        <div class="award-featured-photo">
+          <img
+            src="assets/Startup_Spark_Award.jpg"
+            alt="Startup Spark 2024 Finalist"
+            
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+          />
+          <!-- fallback if photo not yet uploaded -->
+          <div style="display:none;width:100%;height:100%;min-height:320px;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:var(--muted);">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="4" y="8" width="40" height="32" rx="3" stroke="#3d5a78" stroke-width="1.5"/><circle cx="18" cy="22" r="5" stroke="#3d5a78" stroke-width="1.5"/><path d="M4 36l10-8 8 6 8-10 14 12" stroke="#3d5a78" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-align:center;padding:0 1rem;">Upload<br/>assets/Startup_Spark_Award.jpg</span>
+          </div>
+          <!-- overlay gradient -->
+          <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,var(--bg3));pointer-events:none;"></div>
+        </div>
+
+        <!-- RIGHT: details -->
+        <div style="padding:2rem 2rem 2rem 1.75rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;background:var(--bg3);position:relative;">
+          <!-- top accent line -->
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue2),var(--blue));"></div>
+
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.2em;text-transform:uppercase;">October 2024</div>
+
+          <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--text);line-height:1.35;">
+            Finalist
+          </div>
+
+          <div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;color:var(--blue);font-weight:600;line-height:1.4;">
+            Startup Spark 2024
+          </div>
+
+          <div style="font-size:.9rem;color:var(--text2);line-height:1.7;">
+            Issued by the <strong style="color:var(--text);">Institute of Engineers Sri Lanka (IESL) — University of Moratuwa Student Chapter</strong> — Team <strong style="color:var(--text);">HydraZone</strong> — a national startup competition recognizing innovative entrepreneurial ventures.
+          </div>
+
+          <div style="display:flex;align-items:center;gap:.6rem;margin-top:.25rem;">
+            <div style="width:8px;height:8px;background:var(--blue);transform:rotate(45deg);box-shadow:0 0 8px var(--blue);"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.08em;">Institute of Engineers Sri Lanka · Student Chapter</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="award-card" style="max-width:860px;margin:0 auto;width:100%;">
+        <!-- Details only — no image -->
+        <div style="padding:2rem;display:flex;flex-direction:column;justify-content:center;gap:1rem;background:var(--bg3);position:relative;height:100%;">
+          <!-- top accent line -->
+          <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue2),var(--blue));"></div>
+
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--blue);letter-spacing:.2em;text-transform:uppercase;">June 2024</div>
+
+          <div style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--text);line-height:1.35;">
+            Finalist (5th Place)
+          </div>
+
+          <div style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;color:var(--blue);font-weight:600;line-height:1.4;">
+            Predicta 1.0 - AI Prediction Challenge 2024
+          </div>
+
+          <div style="font-size:.9rem;color:var(--text2);line-height:1.7;">
+            Issued by the <strong style="color:var(--text);">IEEE Computer Society — University of Peradeniya Student Chapter</strong> — Team <strong style="color:var(--text);">NeuroNix</strong> — a premier AI prediction challenge recognizing excellence in machine learning and predictive analytics.
+          </div>
+
+          <div style="display:flex;align-items:center;gap:.6rem;margin-top:.25rem;">
+            <div style="width:8px;height:8px;background:var(--blue);transform:rotate(45deg);box-shadow:0 0 8px var(--blue);"></div>
+            <span style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.08em;">IEEE Computer Society · University of Peradeniya</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1528,6 +1634,150 @@ const navEl = document.querySelector('nav');
 window.addEventListener('scroll', ()=>{
   navEl.classList.toggle('scrolled', window.scrollY > 40);
 }, { passive:true });
+/* ══════════════════════════════════════════
+   ABOUT — Magic ring + person rise
+══════════════════════════════════════════ */
+(function(){
+  const personEl  = document.getElementById('about-person');
+  const cBack     = document.getElementById('ring-back');
+  const cFront    = document.getElementById('ring-front');
+  if(!personEl || !cBack || !cFront) return;
+
+  const ctxB = cBack.getContext('2d');
+  const ctxF = cFront.getContext('2d');
+
+  /* Size both canvases to match their CSS width */
+  function sizeCanvas(c){
+    const w = c.offsetWidth;
+    const h = Math.round(w * 0.32);
+    c.width  = w * devicePixelRatio;
+    c.height = h * devicePixelRatio;
+    c.style.height = h + 'px';
+  }
+  function resize(){
+    sizeCanvas(cBack);
+    sizeCanvas(cFront);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* ── Draw one canvas layer of the ring ── */
+  function drawLayer(ctx, progress, layer){
+    const W = ctx.canvas.width;
+    const H = ctx.canvas.height;
+    const dpr = devicePixelRatio;
+    ctx.clearRect(0,0,W,H);
+    if(progress <= 0) return;
+
+    const cx = W/2, cy = H * 0.54;
+    const rx = W * 0.46, ry = H * 0.36;
+
+    if(layer === 'back'){
+      /* Bottom arc — bright, now in back (flipped) */
+
+      /* ① Wide outer glow */
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx*1.12,ry*1.2,0,0,Math.PI*2);
+      const og = ctx.createRadialGradient(cx,cy,rx*0.5,cx,cy,rx*1.15);
+      og.addColorStop(0,'rgba(0,180,255,0)');
+      og.addColorStop(0.75,`rgba(0,180,255,${0.08*progress})`);
+      og.addColorStop(1,'rgba(0,180,255,0)');
+      ctx.fillStyle=og;
+      ctx.fill();
+      ctx.restore();
+
+      /* ② Bright bottom arc stroke */
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx,ry,0, 0, Math.PI); // bottom half
+      ctx.strokeStyle = `rgba(0,200,255,${0.95*progress})`;
+      ctx.lineWidth = 3*dpr;
+      ctx.shadowColor = '#00b4ff';
+      ctx.shadowBlur  = 22*dpr;
+      ctx.stroke();
+      ctx.restore();
+
+      /* ③ Inner thinner bright line */
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx*0.86,ry*0.78,0,0,Math.PI);
+      ctx.strokeStyle = `rgba(140,230,255,${0.45*progress})`;
+      ctx.lineWidth = 1.5*dpr;
+      ctx.shadowColor = '#00e0ff';
+      ctx.shadowBlur  = 10*dpr;
+      ctx.stroke();
+      ctx.restore();
+
+      /* ④ Outer thin dim line */
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx*1.06,ry*1.1,0,0,Math.PI);
+      ctx.strokeStyle = `rgba(0,120,200,${0.25*progress})`;
+      ctx.lineWidth = 1*dpr;
+      ctx.stroke();
+      ctx.restore();
+
+      /* ⑤ Sparkle dots around bottom arc */
+      const sparkCount = 8;
+      for(let i=0;i<sparkCount;i++){
+        const angle = (Math.PI/sparkCount)*i + Date.now()*0.0008;
+        const sx = cx + rx*Math.cos(angle);
+        const sy = cy + ry*Math.sin(angle);
+        const pulse = 0.5 + 0.5*Math.sin(Date.now()*0.003 + i*1.3);
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(sx,sy, (2+pulse*2)*dpr, 0, Math.PI*2);
+        ctx.fillStyle=`rgba(0,220,255,${0.6*pulse*progress})`;
+        ctx.shadowColor='#00dfff';
+        ctx.shadowBlur=8*dpr;
+        ctx.fill();
+        ctx.restore();
+      }
+
+    } else {
+      /* Top arc only — dim, now in front (flipped) */
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx,ry,0, Math.PI, Math.PI*2); // top half
+      ctx.strokeStyle = `rgba(0,120,220,${0.4*progress})`;
+      ctx.lineWidth = 2.5*dpr;
+      ctx.stroke();
+      ctx.restore();
+
+      /* Soft glow bleed above */
+      const g = ctx.createRadialGradient(cx,cy-ry*0.3,0, cx,cy-ry*0.3, rx*0.8);
+      g.addColorStop(0, `rgba(0,60,160,${0.18*progress})`);
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,rx*0.9,ry*0.6,0,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  /* ── Scroll trigger ── */
+  let risen = false;
+  let progress = 0;
+
+  new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && !risen){
+      risen = true;
+      personEl.classList.add('risen');
+    }
+  },{threshold:0.2}).observe(personEl);
+
+  /* ── Animation loop ── */
+  function loop(){
+    requestAnimationFrame(loop);
+    /* Progress ramps up once risen */
+    if(risen && progress < 1) progress = Math.min(1, progress + 0.016);
+    drawLayer(ctxB, progress, 'back');
+    drawLayer(ctxF, progress, 'front');
+  }
+  loop();
+})();
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
