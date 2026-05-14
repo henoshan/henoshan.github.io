@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Education — Henoshan Athimoolanathan"/>
+<title>Education · Henoshan Athimoolanathan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles/base.css"/>
+<link rel="stylesheet" href="styles/components.css"/>
+<link rel="stylesheet" href="styles/sections.css"/>
+<link rel="stylesheet" href="styles/responsive.css"/>
+<link rel="stylesheet" href="styles/animations.css"/>
+<style>
+/* ── Page specific ── */
+.back-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'Space Mono',monospace;font-size:.7rem;
+  color:var(--muted);text-decoration:none;
+  letter-spacing:.12em;text-transform:uppercase;
+  transition:color .3s;margin-bottom:3rem;
+}
+.back-btn:hover{color:var(--blue)}
+.back-btn::before{content:'←';font-size:.9rem}
+
+.page-header{margin-bottom:4rem}
+.page-header .section-label{display:block;margin-bottom:.75rem}
+.page-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;line-height:1;
+  margin-bottom:1rem;
+}
+.page-title span{color:var(--blue)}
+.page-subtitle{
+  font-size:1.05rem;color:var(--text2);
+  max-width:55ch;line-height:1.8;
+}
+
+/* Education detail card */
+.edu-detail-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  margin-bottom:3rem;
+  position:relative;
+  overflow:hidden;
+  transition:border-color .3s, box-shadow .3s;
+}
+.edu-detail-card:hover{
+  border-color:rgba(0,180,255,.4);
+  box-shadow:0 0 60px rgba(0,180,255,.06), 0 24px 64px rgba(0,0,0,.4);
+}
+.edu-detail-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue2),var(--blue));
+}
+
+.edu-header{
+  padding:2.5rem 2.5rem 0;
+  display:flex;gap:1.5rem;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+.edu-num{
+  font-family:'Space Mono',monospace;
+  font-size:.62rem;color:var(--blue);
+  letter-spacing:.25em;opacity:.5;
+  margin-bottom:.4rem;
+}
+.edu-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  font-weight:700;color:var(--text);
+  line-height:1.25;flex:1;
+}
+.edu-institution-tag{
+  font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Space Mono',monospace;
+  font-size:.65rem;color:var(--blue);
+  border:1px solid rgba(0,180,255,.3);
+  background:rgba(0,180,255,.06);
+  padding:.3rem .9rem;border-radius:3px;
+  white-space:nowrap;align-self:flex-start;
+  margin-top:.2rem;
+}
+
+.edu-body{padding:2rem 2.5rem}
+
+.edu-section-label{
+  font-family:'Space Mono',monospace;
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-bottom:.75rem;
+}
+
+.edu-desc{
+  color:var(--text2);font-size:1rem;
+  line-height:1.9;margin-bottom:2rem;
+  max-width:72ch;
+}
+
+.edu-highlights{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:.75rem;
+  margin-bottom:2rem;
+}
+.edu-highlight{
+  background:rgba(0,0,0,.25);
+  border:1px solid var(--border2);
+  padding:.9rem 1.1rem;
+  border-radius:4px;
+}
+.edu-highlight-val{
+  font-family:'Orbitron',monospace;
+  font-size:1.1rem;font-weight:700;
+  color:var(--blue);display:block;
+  margin-bottom:.2rem;
+}
+.edu-highlight-label{
+  font-family:'Space Mono',monospace;
+  font-size:.6rem;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+.edu-courses{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  margin-bottom:2rem;
+}
+.edu-course-tag{
+  font-family:'Space Mono',monospace;
+  font-size:.65rem;font-weight:700;
+  color:#90d8f8;
+  border:1px solid rgba(0,180,255,.5);
+  background:rgba(0,25,55,.8);
+  padding:.3rem 1rem;border-radius:4px;
+  letter-spacing:.06em;
+  transition:all .25s ease;
+}
+.edu-course-tag:hover{
+  background:rgba(0,100,200,.4);
+  border-color:var(--blue);color:#fff;
+  transform:translateY(-2px);
+}
+
+.edu-footer{
+  border-top:1px solid var(--border);
+  padding:1.25rem 2.5rem;
+  display:flex;gap:1rem;flex-wrap:wrap;
+  align-items:center;
+}
+
+/* Scroll offset for anchor links */
+.edu-anchor{
+  display:block;
+  position:relative;
+  top:-100px;
+  visibility:hidden;
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ANIMATED BG -->
+<canvas id="bg-canvas"></canvas>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HENOSHAN<span>//</span>Data Scientist</div>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#education">Education</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#publications">Research</a>
+    <a href="index.html#awards">Awards</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Available for work
+  </div>
+</nav>
+
+<!-- MAIN -->
+<section style="padding-top:9rem;padding-bottom:6rem;">
+  <div class="container">
+
+    <a class="back-btn" href="index.html">Back to Portfolio</a>
+
+    <div class="page-header">
+      <span class="section-label">// All Education</span>
+      <h1 class="page-title">Academic <span>Journey</span></h1>
+      <p class="page-subtitle">
+        A comprehensive overview of my educational background in engineering and related disciplines, from secondary education through to tertiary studies.
+      </p>
+    </div>
+
+    <!-- ── EDUCATION 01 ── -->
+    <span class="edu-anchor" id="e01"></span>
+    <div class="edu-detail-card reveal">
+      <div class="edu-header">
+        <div style="display:flex;gap:1.5rem;align-items:flex-start;flex:1;">
+          <img src="assets/uom.png" alt="University of Moratuwa logo" style="height:60px;width:auto;max-width:100px;object-fit:contain;opacity:.8;"/>
+          <div style="flex:1;">
+            <div class="edu-num">EDU_01</div>
+            <div class="edu-title">Bachelor of Science in Engineering (Honors)</div>
+          </div>
+        </div>
+        <div class="edu-institution-tag">Moratuwa, Sri Lanka 🇱🇰</div>
+      </div>
+      <div class="edu-body">
+
+        <div class="edu-section-label">// Overview</div>
+        <p class="edu-desc">
+          Comprehensive undergraduate degree through the Faculty of Engineering at University of Moratuwa. Developed strong foundational knowledge in engineering principles, signal processing, embedded systems, and control systems. Gained hands-on experience through laboratory work, design projects, and industrial internships.
+        </p>
+
+        <div class="edu-section-label">// Academic Period</div>
+        <div class="edu-highlights">
+          <div class="edu-highlight">
+            <span class="edu-highlight-val">2020 — 2025</span>
+            <span class="edu-highlight-label">Duration</span>
+          </div>
+          <div class="edu-highlight">
+            <span class="edu-highlight-val">Faculty of Engineering</span>
+            <span class="edu-highlight-label">Faculty</span>
+          </div>
+        </div>
+
+        <div class="edu-section-label">// Core Coursework & Skills</div>
+        <div class="edu-courses">
+          <span class="edu-course-tag">Electrical Circuits</span>
+          <span class="edu-course-tag">Electronics Design</span>
+          <span class="edu-course-tag">Signal Processing</span>
+          <span class="edu-course-tag">Embedded Systems</span>
+          <span class="edu-course-tag">Power Systems</span>
+          <span class="edu-course-tag">Control Systems</span>
+          <span class="edu-course-tag">Digital Logic</span>
+          <span class="edu-course-tag">Microprocessors</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── EDUCATION 02 ── -->
+    <span class="edu-anchor" id="e02"></span>
+    <div class="edu-detail-card reveal">
+      <div class="edu-header">
+        <div style="display:flex;gap:1.5rem;align-items:flex-start;flex:1;">
+          <img src="assets/hartley.png" alt="Hartley College logo" style="height:60px;width:auto;max-width:100px;object-fit:contain;opacity:.8;"/>
+          <div style="flex:1;">
+            <div class="edu-num">EDU_02</div>
+            <div class="edu-title">Secondary Education</div>
+          </div>
+        </div>
+        <div class="edu-institution-tag">Colombo, Sri Lanka 🇱🇰</div>
+      </div>
+      <div class="edu-body">
+
+        <div class="edu-section-label">// Overview</div>
+        <p class="edu-desc">
+          Completed secondary education at Hartley College, establishing a strong foundation in mathematics, sciences, and liberal arts. Developed critical thinking and analytical skills through rigorous academic training. Participated in extracurricular activities and competitive programs that fostered leadership and collaborative learning.
+        </p>
+
+        <div class="edu-section-label">// Academic Period</div>
+        <div class="edu-highlights">
+          <div class="edu-highlight">
+            <span class="edu-highlight-val">Secondary</span>
+            <span class="edu-highlight-label">Education Levels</span>
+          </div>
+          <div class="edu-highlight">
+            <span class="edu-highlight-val">Hartley College</span>
+            <span class="edu-highlight-label">Institution</span>
+          </div>
+        </div>
+
+        <div class="edu-section-label">// Subjects & Activities</div>
+        <div class="edu-courses">
+          <span class="edu-course-tag">Mathematics</span>
+          <span class="edu-course-tag">Physics</span>
+          <span class="edu-course-tag">Chemistry</span>
+          <span class="edu-course-tag">Biology</span>
+          <span class="edu-course-tag">English</span>
+          <span class="edu-course-tag">Science Projects</span>
+          <span class="edu-course-tag">Leadership Programs</span>
+          <span class="edu-course-tag">Sports & Co-curricular</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.1em;">
+  © 2024 Henoshan Athimoolanathan. Crafted with precision.
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+// Include the same scripts as index.html for interactivity
+(function(){
+  const canvas = document.getElementById('bg-canvas');
+  if(!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  
+  function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  
+  let time = 0;
+  function animate(){
+    time += 0.005;
+    ctx.fillStyle = 'rgba(5,8,15,0.1)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    requestAnimationFrame(animate);
+  }
+  
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  animate();
+})();
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e){
+    const href = this.getAttribute('href');
+    if(href !== '#') e.preventDefault();
+  });
+});
+
+// Scroll reveal animation
+const revealElements = document.querySelectorAll('.reveal');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) e.target.style.opacity = '1';
+  });
+}, { threshold: 0.1 });
+
+revealElements.forEach(el => {
+  el.style.opacity = '0';
+  el.style.transition = 'opacity 0.6s ease';
+  revObs.observe(el);
+});
+</script>
+
+</body>
+</html>
