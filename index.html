@@ -782,104 +782,27 @@ footer .f-name{color:var(--blue)}
   cursor:default;
 }
 
-/* ══════════════════════════════════════
-   DOMAINS SECTION
-══════════════════════════════════════ */
-.domains-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:1.5rem;
-}
-
-.domain-card{
-  background:linear-gradient(145deg,rgba(8,14,28,.9),rgba(5,9,18,.95));
-  border:1px solid var(--border);
-  padding:2rem 1.75rem;
-  position:relative;
-  overflow:hidden;
-  cursor:default;
-  transition:border-color .35s, transform .35s, box-shadow .35s;
-}
-.domain-card::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--blue),transparent);
-  opacity:0;
-  transition:opacity .35s;
-}
-.domain-card::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:radial-gradient(ellipse at 20% 50%, rgba(0,180,255,.05), transparent 65%);
-  opacity:0;
-  transition:opacity .4s;
-  pointer-events:none;
-}
-.domain-card:hover{
-  border-color:rgba(0,180,255,.4);
-  transform:translateY(-6px);
-  box-shadow:0 20px 60px rgba(0,0,0,.5), 0 0 30px rgba(0,180,255,.08);
-}
-.domain-card:hover::before{ opacity:1 }
-.domain-card:hover::after{ opacity:1 }
-
-.domain-icon{
-  width:48px;height:48px;
-  margin-bottom:1.25rem;
-  opacity:.75;
-  transition:opacity .3s, transform .3s;
-}
-.domain-card:hover .domain-icon{
-  opacity:1;
-  transform:scale(1.08);
-  filter:drop-shadow(0 0 8px rgba(0,180,255,.5));
-}
-
-.domain-num{
-  font-family:'Space Mono',monospace;
-  font-size:.6rem;color:var(--blue);
-  letter-spacing:.25em;opacity:.5;
-  margin-bottom:.5rem;
-}
-
-.domain-name{
+.domain-pill{
   font-family:'Orbitron',monospace;
-  font-size:.95rem;font-weight:700;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.08em;
   color:var(--text);
-  line-height:1.3;
-  margin-bottom:.85rem;
-  transition:color .3s, text-shadow .3s;
+  background:rgba(0,180,255,.06);
+  border:1px solid rgba(0,180,255,.22);
+  padding:.45rem 1.1rem;
+  border-radius:2px;
+  cursor:default;
+  transition:all .25s ease;
+  white-space:nowrap;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
 }
-.domain-card:hover .domain-name{
+.domain-pill:hover{
+  background:rgba(0,180,255,.12);
+  border-color:rgba(0,180,255,.5);
   color:#e8f7ff;
-  text-shadow:0 0 10px rgba(0,180,255,.25);
-}
-
-.domain-desc{
-  font-size:.9rem;color:var(--text2);
-  line-height:1.75;margin-bottom:1.25rem;
-}
-
-.domain-tags{
-  display:flex;flex-wrap:wrap;gap:.4rem;
-}
-.domain-tags span{
-  font-family:'Space Mono',monospace;
-  font-size:.6rem;
-  color:rgba(0,180,255,.8);
-  border:1px solid rgba(0,180,255,.2);
-  background:rgba(0,180,255,.05);
-  padding:.2rem .65rem;
-  border-radius:3px;
-  letter-spacing:.05em;
-  transition:all .25s;
-}
-.domain-card:hover .domain-tags span{
-  border-color:rgba(0,180,255,.4);
-  background:rgba(0,180,255,.1);
-  color:var(--blue);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(0,180,255,.12);
 }
 
 </style>
@@ -905,7 +828,6 @@ footer .f-name{color:var(--blue)}
     <a href="#education">Education</a>
     <a href="#skills">Skills</a>
     <a href="#projects">Projects</a>
-    <a href="#domains">Domains</a>
     <a href="#publications">Research</a>
     <a href="#awards">Awards</a>
     <a href="#contact">Contact</a>
@@ -1030,6 +952,19 @@ footer .f-name{color:var(--blue)}
             <span class="info-val" style="color:var(--blue)">Open to Opportunities</span>
           </div>
         </div>
+        <!-- DOMAIN STRIP -->
+        <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
+          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.25em;text-transform:uppercase;margin-bottom:1.1rem;opacity:.7;">// Industries</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.65rem;">
+            <span class="domain-pill">Healthcare AI</span>
+            <span class="domain-pill">E-Commerce &amp; Retail</span>
+            <span class="domain-pill">Social Media</span>
+            <span class="domain-pill">Robotics &amp; HRI</span>
+            <span class="domain-pill">Generative AI · Fashion</span>
+            <span class="domain-pill">Energy &amp; Power Systems</span>
+          </div>
+        </div>
+
         <div class="tag-label" style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em;margin-top:1.75rem;margin-bottom:.75rem;text-transform:uppercase;">// Tech Stack — Drag to rotate</div>
         <div id="tech-sphere-container"></div>
       </div>
@@ -1394,138 +1329,6 @@ footer .f-name{color:var(--blue)}
 
     <div style="text-align:center;margin-top:2.5rem;">
       <a href="projects.html" class="btn btn-outline">[ VIEW ALL PROJECTS → ]</a>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ══════════════════════════════════════
-     DOMAINS
-══════════════════════════════════════ -->
-<section id="domains">
-  <div class="container reveal">
-    <p class="section-label">// Industries</p>
-    <h2 class="section-title">AI Domains I've <span>Worked In</span></h2>
-    <p style="color:var(--text2);max-width:58ch;margin-bottom:3rem;font-size:1.05rem;line-height:1.8;">
-      Applying data science and machine learning across diverse industries — each with its own
-      data complexity, constraints, and real-world stakes.
-    </p>
-
-    <div class="domains-grid">
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 4C24 4 10 10 10 22C10 30 16 36 24 38C32 36 38 30 38 22C38 10 24 4 24 4Z" stroke="#00b4ff" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M18 24L22 28L30 20" stroke="#00b4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="24" cy="44" r="2" fill="#00b4ff" opacity=".5"/>
-            <line x1="24" y1="38" x2="24" y2="42" stroke="#00b4ff" stroke-width="1.5" opacity=".5"/>
-          </svg>
-        </div>
-        <div class="domain-num">01</div>
-        <div class="domain-name">Healthcare AI</div>
-        <div class="domain-desc">Predictive analytics, clinical decision support, and HIPAA-compliant ML systems for patient outcomes.</div>
-        <div class="domain-tags">
-          <span>Predictive Modelling</span><span>LLMs</span><span>HIPAA</span>
-        </div>
-      </div>
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="14" width="32" height="24" rx="3" stroke="#00b4ff" stroke-width="1.5"/>
-            <path d="M16 14V10C16 8.9 16.9 8 18 8H30C31.1 8 32 8.9 32 10V14" stroke="#00b4ff" stroke-width="1.5"/>
-            <circle cx="24" cy="26" r="5" stroke="#00b4ff" stroke-width="1.5"/>
-            <path d="M8 20H40" stroke="#00b4ff" stroke-width="1" opacity=".4"/>
-          </svg>
-        </div>
-        <div class="domain-num">02</div>
-        <div class="domain-name">E-Commerce &amp; Retail</div>
-        <div class="domain-desc">Recommendation engines, demand forecasting, and intelligent automation for online retail platforms.</div>
-        <div class="domain-tags">
-          <span>Recommendations</span><span>Forecasting</span><span>NLP</span>
-        </div>
-      </div>
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="24" cy="24" r="16" stroke="#00b4ff" stroke-width="1.5" stroke-dasharray="4 2"/>
-            <circle cx="24" cy="12" r="4" fill="#00b4ff" opacity=".7"/>
-            <circle cx="36" cy="30" r="4" fill="#00b4ff" opacity=".5"/>
-            <circle cx="12" cy="30" r="4" fill="#00b4ff" opacity=".5"/>
-            <line x1="24" y1="16" x2="34" y2="28" stroke="#00b4ff" stroke-width="1" opacity=".5"/>
-            <line x1="24" y1="16" x2="14" y2="28" stroke="#00b4ff" stroke-width="1" opacity=".5"/>
-            <line x1="14" y1="30" x2="34" y2="30" stroke="#00b4ff" stroke-width="1" opacity=".5"/>
-          </svg>
-        </div>
-        <div class="domain-num">03</div>
-        <div class="domain-name">Social Media Intelligence</div>
-        <div class="domain-desc">Sentiment analysis, content classification, and trend detection across large-scale social data streams.</div>
-        <div class="domain-tags">
-          <span>Sentiment Analysis</span><span>Graph AI</span><span>NLP</span>
-        </div>
-      </div>
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="16" y="28" width="16" height="14" rx="2" stroke="#00b4ff" stroke-width="1.5"/>
-            <circle cx="24" cy="16" r="8" stroke="#00b4ff" stroke-width="1.5"/>
-            <line x1="20" y1="28" x2="20" y2="42" stroke="#00b4ff" stroke-width="1" opacity=".4"/>
-            <line x1="28" y1="28" x2="28" y2="42" stroke="#00b4ff" stroke-width="1" opacity=".4"/>
-            <circle cx="22" cy="15" r="1.5" fill="#00b4ff" opacity=".8"/>
-            <circle cx="26" cy="15" r="1.5" fill="#00b4ff" opacity=".8"/>
-            <path d="M21 20 Q24 22 27 20" stroke="#00b4ff" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <div class="domain-num">04</div>
-        <div class="domain-name">Robotics &amp; HRI</div>
-        <div class="domain-desc">Multimodal AI systems for conversational service robots, integrating vision, speech, and language models.</div>
-        <div class="domain-tags">
-          <span>Multimodal AI</span><span>LLMs</span><span>Speech</span>
-        </div>
-      </div>
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 36 C12 36 18 20 24 20 C30 20 36 36 36 36" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M8 28 C8 28 16 8 24 8 C32 8 40 28 40 28" stroke="#00b4ff" stroke-width="1" opacity=".4" stroke-linecap="round"/>
-            <circle cx="24" cy="20" r="3" fill="#00b4ff" opacity=".7"/>
-            <line x1="12" y1="40" x2="36" y2="40" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="domain-num">05</div>
-        <div class="domain-name">Generative AI for Fashion</div>
-        <div class="domain-desc">AI-driven design generation, style recommendation, and visual intelligence for fashion and creative industries.</div>
-        <div class="domain-tags">
-          <span>Generative AI</span><span>Computer Vision</span><span>Diffusion</span>
-        </div>
-      </div>
-
-      <div class="domain-card">
-        <div class="domain-icon">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M24 8 L24 16" stroke="#00b4ff" stroke-width="2" stroke-linecap="round"/>
-            <path d="M24 32 L24 40" stroke="#00b4ff" stroke-width="2" stroke-linecap="round" opacity=".5"/>
-            <path d="M12 16 L18 22" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M30 26 L36 32" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-            <circle cx="24" cy="24" r="8" stroke="#00b4ff" stroke-width="1.5"/>
-            <circle cx="24" cy="24" r="3" fill="#00b4ff" opacity=".6"/>
-            <path d="M36 16 L30 22" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M12 32 L18 26" stroke="#00b4ff" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-          </svg>
-        </div>
-        <div class="domain-num">06</div>
-        <div class="domain-name">Energy &amp; Power Systems</div>
-        <div class="domain-desc">Anomaly detection, predictive maintenance, and demand forecasting for power generation and utility networks.</div>
-        <div class="domain-tags">
-          <span>Anomaly Detection</span><span>Time-Series</span><span>IoT</span>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
