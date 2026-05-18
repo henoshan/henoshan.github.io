@@ -782,27 +782,125 @@ footer .f-name{color:var(--blue)}
   cursor:default;
 }
 
-.domain-pill{
-  font-family:'Orbitron',monospace;
-  font-size:.68rem;
-  font-weight:700;
-  letter-spacing:.08em;
-  color:var(--text);
-  background:rgba(0,180,255,.06);
-  border:1px solid rgba(0,180,255,.22);
-  padding:.45rem 1.1rem;
-  border-radius:2px;
-  cursor:default;
-  transition:all .25s ease;
-  white-space:nowrap;
-  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+/* ── DOMAIN STRIP ── */
+#domain-strip{
+  position:relative;
+  z-index:2;
+  padding:3.5rem 0;
+  background:linear-gradient(180deg,
+    rgba(0,10,24,.0) 0%,
+    rgba(0,12,28,.55) 30%,
+    rgba(0,12,28,.55) 70%,
+    rgba(0,10,24,.0) 100%
+  );
+  border-top:1px solid rgba(0,180,255,.08);
+  border-bottom:1px solid rgba(0,180,255,.08);
+  overflow:hidden;
 }
-.domain-pill:hover{
-  background:rgba(0,180,255,.12);
-  border-color:rgba(0,180,255,.5);
+#domain-strip::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 15% 50%, rgba(0,85,255,.06), transparent),
+    radial-gradient(ellipse 50% 80% at 85% 50%, rgba(0,180,255,.05), transparent);
+  pointer-events:none;
+}
+
+.domain-strip-label{
+  font-family:'Space Mono',monospace;
+  font-size:.65rem;color:var(--muted);
+  letter-spacing:.3em;text-transform:uppercase;
+  text-align:center;margin-bottom:2rem;
+  opacity:.6;
+}
+
+.domain-strip-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:0;
+  width:100%;
+}
+
+@media(max-width:1100px){
+  .domain-strip-grid{ grid-template-columns:repeat(3,1fr) }
+}
+@media(max-width:640px){
+  .domain-strip-grid{ grid-template-columns:repeat(2,1fr) }
+}
+
+/* 3D button */
+.domain-pill-3d{
+  position:relative;
+  cursor:default;
+  /* 3D base — bottom face */
+  border-right:1px solid rgba(0,180,255,.1);
+}
+.domain-pill-3d:last-child{ border-right:none }
+
+.dp-inner{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:.75rem;
+  padding:2rem 1rem 1.75rem;
+  position:relative;
+  background:linear-gradient(160deg,rgba(0,25,55,.6),rgba(0,10,30,.8));
+  border-top:1px solid rgba(0,180,255,.12);
+  border-bottom:1px solid rgba(0,0,0,.4);
+
+  /* 3D depth illusion */
+  box-shadow:
+    inset 0 1px 0 rgba(0,180,255,.12),
+    inset 0 -3px 0 rgba(0,0,0,.5),
+    0 6px 0 rgba(0,0,0,.35),
+    0 8px 16px rgba(0,0,0,.4);
+
+  transition:
+    transform .22s cubic-bezier(.4,0,.2,1),
+    box-shadow .22s ease,
+    background .22s ease;
+}
+
+.domain-pill-3d:hover .dp-inner{
+  background:linear-gradient(160deg,rgba(0,50,100,.7),rgba(0,25,60,.9));
+  transform:translateY(-5px);
+  box-shadow:
+    inset 0 1px 0 rgba(0,220,255,.2),
+    inset 0 -3px 0 rgba(0,0,0,.5),
+    0 11px 0 rgba(0,0,0,.3),
+    0 14px 28px rgba(0,0,0,.45),
+    0 0 24px rgba(0,180,255,.1);
+}
+
+.dp-icon{
+  width:32px;height:32px;
+  color:var(--blue);
+  opacity:.7;
+  transition:opacity .25s, transform .25s, filter .25s;
+  flex-shrink:0;
+}
+.domain-pill-3d:hover .dp-icon{
+  opacity:1;
+  transform:scale(1.12);
+  filter:drop-shadow(0 0 6px rgba(0,180,255,.6));
+}
+
+.dp-name{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(.6rem,.9vw,.82rem);
+  font-weight:700;
+  color:var(--text2);
+  letter-spacing:.06em;
+  text-align:center;
+  line-height:1.35;
+  text-transform:uppercase;
+  transition:color .25s, text-shadow .25s;
+}
+.domain-pill-3d:hover .dp-name{
   color:#e8f7ff;
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(0,180,255,.12);
+  text-shadow:0 0 12px rgba(0,180,255,.4);
 }
 
 </style>
@@ -952,18 +1050,6 @@ footer .f-name{color:var(--blue)}
             <span class="info-val" style="color:var(--blue)">Open to Opportunities</span>
           </div>
         </div>
-        <!-- DOMAIN STRIP -->
-        <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);">
-          <div style="font-family:'Space Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.25em;text-transform:uppercase;margin-bottom:1.1rem;opacity:.7;">// Industries</div>
-          <div style="display:flex;flex-wrap:wrap;gap:.65rem;">
-            <span class="domain-pill">Healthcare AI</span>
-            <span class="domain-pill">E-Commerce &amp; Retail</span>
-            <span class="domain-pill">Social Media</span>
-            <span class="domain-pill">Robotics &amp; HRI</span>
-            <span class="domain-pill">Generative AI · Fashion</span>
-            <span class="domain-pill">Energy &amp; Power Systems</span>
-          </div>
-        </div>
 
         <div class="tag-label" style="font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.2em;margin-top:1.75rem;margin-bottom:.75rem;text-transform:uppercase;">// Tech Stack — Drag to rotate</div>
         <div id="tech-sphere-container"></div>
@@ -971,6 +1057,49 @@ footer .f-name{color:var(--blue)}
     </div>
   </div>
 </section>
+
+<!-- DOMAIN STRIP — full width between about and experience -->
+<div id="domain-strip">
+  <div class="domain-strip-label">// AI Domains</div>
+  <div class="domain-strip-grid">
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><path d="M16 3C16 3 7 7 7 15C7 21 11 25 16 26C21 25 25 21 25 15C25 7 16 3 16 3Z" stroke="currentColor" stroke-width="1.2"/><path d="M12 16L15 19L20 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="dp-name">Healthcare AI</span>
+      </div>
+    </div>
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><rect x="5" y="9" width="22" height="16" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M11 9V7C11 6.4 11.4 6 12 6H20C20.6 6 21 6.4 21 7V9" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="17" r="3.5" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span class="dp-name">E-Commerce &amp; Retail</span>
+      </div>
+    </div>
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="8" r="3" fill="currentColor" opacity=".7"/><circle cx="26" cy="20" r="3" fill="currentColor" opacity=".5"/><circle cx="6" cy="20" r="3" fill="currentColor" opacity=".5"/><line x1="16" y1="11" x2="24" y2="18" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="16" y1="11" x2="8" y2="18" stroke="currentColor" stroke-width="1.2" opacity=".6"/><line x1="8" y1="20" x2="24" y2="20" stroke="currentColor" stroke-width="1.2" opacity=".6"/></svg>
+        <span class="dp-name">Social Media Intelligence</span>
+      </div>
+    </div>
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><rect x="11" y="18" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="11" r="5" stroke="currentColor" stroke-width="1.2"/><circle cx="14" cy="10" r="1" fill="currentColor" opacity=".8"/><circle cx="18" cy="10" r="1" fill="currentColor" opacity=".8"/><path d="M14 13.5 Q16 15 18 13.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" fill="none"/></svg>
+        <span class="dp-name">Robotics &amp; HRI</span>
+      </div>
+    </div>
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><path d="M8 24C8 24 12 13 16 13C20 13 24 24 24 24" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="16" cy="13" r="2.5" fill="currentColor" opacity=".6"/><line x1="8" y1="27" x2="24" y2="27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="dp-name">Generative AI · Fashion</span>
+      </div>
+    </div>
+    <div class="domain-pill-3d">
+      <div class="dp-inner">
+        <svg class="dp-icon" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="2" fill="currentColor" opacity=".6"/><line x1="16" y1="4" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="22" x2="16" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/><line x1="4" y1="16" x2="10" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".5"/><line x1="22" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="dp-name">Energy &amp; Power Systems</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="divider"></div>
 
